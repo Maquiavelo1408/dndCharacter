@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DndCharacter", "DndCharacte
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SL.API", "SL.API\SL.API.csproj", "{9906CFEC-A5E6-4631-A4CD-03765C663E1F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BL.BusinessLogic", "BL.BusinessLogic\BL.BusinessLogic.csproj", "{FA4ECD54-2842-4C3D-875A-BB05EC0D2401}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{9906CFEC-A5E6-4631-A4CD-03765C663E1F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9906CFEC-A5E6-4631-A4CD-03765C663E1F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9906CFEC-A5E6-4631-A4CD-03765C663E1F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FA4ECD54-2842-4C3D-875A-BB05EC0D2401}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FA4ECD54-2842-4C3D-875A-BB05EC0D2401}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FA4ECD54-2842-4C3D-875A-BB05EC0D2401}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FA4ECD54-2842-4C3D-875A-BB05EC0D2401}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
