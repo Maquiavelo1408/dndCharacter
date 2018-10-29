@@ -9,5 +9,8 @@ namespace BL.BusinessLogic.ViewModel
     {
         public string Name { get; set; }
         public ClassesCollection Class { get; set; }
+        public int Level { get; set; }
+        public AligmentCollection Aligment { get; set; }
+        public SpellKnowViewModel SpellsKnown { get; set; }
     }
 }
