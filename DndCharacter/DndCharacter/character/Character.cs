@@ -11,9 +11,10 @@ namespace DndCharacter
         {
             GetData();
         }
-        public void GetData()
+        public JObject GetData()
         {
-            var data = JObject.Parse(File.ReadAllText("@./propertis.json"));
+            var data = JObject.Parse(File.ReadAllText("../DndCharacter/character/properties.json"));
+            return data;
         }
     }
 }
