@@ -9,9 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SL.API", "SL.API\SL.API.csp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BL.BusinessLogic", "BL.BusinessLogic\BL.BusinessLogic.csproj", "{FA4ECD54-2842-4C3D-875A-BB05EC0D2401}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DAL.Model", "DAL.Model\DAL.Model.csproj", "{3D7773E2-2E0F-41CB-9A52-749BA0808358}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DAL.Model", "DAL.Model\DAL.Model.csproj", "{3D7773E2-2E0F-41CB-9A52-749BA0808358}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DAL.Data", "DAL.Data\DAL.Data.csproj", "{F3D3837D-265D-44B1-AB03-A0BC4355BF6E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DAL.Data", "DAL.Data\DAL.Data.csproj", "{F3D3837D-265D-44B1-AB03-A0BC4355BF6E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

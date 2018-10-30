@@ -12,6 +12,9 @@ namespace DAL.Data
     public partial class DndCharacterManagerContext : DbContext
     {
         public virtual DbSet<Character> Character { get; set; }
+        public virtual DbSet<Spell> Spell { get; set; }
+        public virtual DbSet<CharacterSpell> CharacterSpell { get; set; }
+        public virtual DbSet<SpellClass> SpellClass { get; set; }
 
         public DndCharacterManagerContext(DbContextOptions<DndCharacterManagerContext> options) : base(options) { }
         public DndCharacterManagerContext() : base() { }
@@ -19,7 +22,10 @@ namespace DAL.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-
+            modelBuilder.Entity<CharacterSpell>()
+                .HasKey(k => new { k.IdCharacter, k.IdSpell });
+            modelBuilder.Entity<SpellClass>()
+                .HasKey(k => new { k.IdSpell, k.IdCClass });
 
         }
         public class DndContextFactory
