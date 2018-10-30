@@ -3,11 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28010.2046
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DndCharacter", "DndCharacter\DndCharacter.csproj", "{F1201EAC-B2FF-43F8-9F3B-30BFC70554AC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DndCharacter", "DndCharacter\DndCharacter.csproj", "{F1201EAC-B2FF-43F8-9F3B-30BFC70554AC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SL.API", "SL.API\SL.API.csproj", "{9906CFEC-A5E6-4631-A4CD-03765C663E1F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SL.API", "SL.API\SL.API.csproj", "{9906CFEC-A5E6-4631-A4CD-03765C663E1F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BL.BusinessLogic", "BL.BusinessLogic\BL.BusinessLogic.csproj", "{FA4ECD54-2842-4C3D-875A-BB05EC0D2401}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BL.BusinessLogic", "BL.BusinessLogic\BL.BusinessLogic.csproj", "{FA4ECD54-2842-4C3D-875A-BB05EC0D2401}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DAL.Model", "DAL.Model\DAL.Model.csproj", "{3D7773E2-2E0F-41CB-9A52-749BA0808358}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DAL.Data", "DAL.Data\DAL.Data.csproj", "{F3D3837D-265D-44B1-AB03-A0BC4355BF6E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +31,14 @@ Global
 		{FA4ECD54-2842-4C3D-875A-BB05EC0D2401}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FA4ECD54-2842-4C3D-875A-BB05EC0D2401}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FA4ECD54-2842-4C3D-875A-BB05EC0D2401}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3D7773E2-2E0F-41CB-9A52-749BA0808358}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3D7773E2-2E0F-41CB-9A52-749BA0808358}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3D7773E2-2E0F-41CB-9A52-749BA0808358}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3D7773E2-2E0F-41CB-9A52-749BA0808358}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F3D3837D-265D-44B1-AB03-A0BC4355BF6E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F3D3837D-265D-44B1-AB03-A0BC4355BF6E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F3D3837D-265D-44B1-AB03-A0BC4355BF6E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F3D3837D-265D-44B1-AB03-A0BC4355BF6E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

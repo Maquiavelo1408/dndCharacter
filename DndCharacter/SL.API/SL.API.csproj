@@ -15,6 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\DAL.Data\DAL.Data.csproj" />
     <ProjectReference Include="..\DndCharacter\DndCharacter.csproj" />
   </ItemGroup>
 
