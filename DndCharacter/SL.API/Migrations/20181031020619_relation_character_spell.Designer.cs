@@ -3,14 +3,16 @@ using DAL.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace SL.API.Migrations
 {
     [DbContext(typeof(DndCharacterManagerContext))]
-    partial class DndCharacterManagerContextModelSnapshot : ModelSnapshot
+    [Migration("20181031020619_relation_character_spell")]
+    partial class relation_character_spell
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -25,47 +27,21 @@ namespace SL.API.Migrations
                         .HasColumnName("id_character")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("ArmorClass")
-                        .HasColumnName("armor_class");
-
-                    b.Property<int>("ExperiencePoints")
-                        .HasColumnName("experience_points");
-
                     b.Property<int>("IdCAligment")
                         .HasColumnName("id_c_aligment");
 
                     b.Property<int>("IdClass")
                         .HasColumnName("id_class");
 
-                    b.Property<int>("IdRace")
-                        .HasColumnName("id_race");
-
-                    b.Property<int>("Initiative")
-                        .HasColumnName("initiative");
-
                     b.Property<string>("Level")
                         .HasColumnName("level");
-
-                    b.Property<int>("MaxHitPoints")
-                        .HasColumnName("max_hit_points");
 
                     b.Property<string>("Name")
                         .HasColumnName("name");
 
-                    b.Property<string>("PlayerName")
-                        .HasColumnName("player_name");
-
-                    b.Property<int>("ProficiencyBonus")
-                        .HasColumnName("proficiency_bonus");
-
-                    b.Property<int>("Speed")
-                        .HasColumnName("speed");
-
                     b.HasKey("Id");
 
                     b.HasIndex("IdCAligment");
-
-                    b.HasIndex("IdClass");
 
                     b.ToTable("character");
                 });
@@ -83,21 +59,6 @@ namespace SL.API.Migrations
                     b.HasIndex("IdSpell");
 
                     b.ToTable("character_spell");
-                });
-
-            modelBuilder.Entity("DAL.Model.Entities.Class", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnName("id_class")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Name")
-                        .HasColumnName("name");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("class");
                 });
 
             modelBuilder.Entity("DAL.Model.Entities.Collection", b =>
@@ -174,11 +135,6 @@ namespace SL.API.Migrations
                     b.HasOne("DAL.Model.Entities.DataCollection", "Aligment")
                         .WithMany("CharactersAligment")
                         .HasForeignKey("IdCAligment")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("DAL.Model.Entities.Class", "Class")
-                        .WithMany("CharacterClasses")
-                        .HasForeignKey("IdClass")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

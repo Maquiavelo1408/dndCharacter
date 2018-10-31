@@ -13,5 +13,11 @@ namespace DAL.Model.Entities
 
         [Column("id_spell")]
         public int IdSpell { get; set; }
+
+        [InverseProperty("CharacterSpells"), ForeignKey("IdCharacter")]
+        public virtual Character Character { get; set; }
+
+        [InverseProperty("CharacterSpells"), ForeignKey("IdSpell")]
+        public virtual Spell Spell { get; set; }
     }
 }

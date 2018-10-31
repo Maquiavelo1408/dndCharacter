@@ -11,10 +11,22 @@ namespace DAL.Data
 {
     public partial class DndCharacterManagerContext : DbContext
     {
-        public virtual DbSet<Character> Character { get; set; }
-        public virtual DbSet<Spell> Spell { get; set; }
-        public virtual DbSet<CharacterSpell> CharacterSpell { get; set; }
-        public virtual DbSet<SpellClass> SpellClass { get; set; }
+        public virtual DbSet<Character> Characters { get; set; }
+        public virtual DbSet<Spell> Spells { get; set; }
+        public virtual DbSet<CharacterSpell> CharacterSpells { get; set; }
+        public virtual DbSet<SpellClass> SpellClasses { get; set; }
+        public virtual DbSet<Collection> Collections { get; set; }
+        public virtual DbSet<DataCollection> DataCollections { get; set; }
+        public virtual DbSet<Class> Classes { get; set; }
+
+
+
+
+
+
+
+
+
 
         public DndCharacterManagerContext(DbContextOptions<DndCharacterManagerContext> options) : base(options) { }
         public DndCharacterManagerContext() : base() { }
