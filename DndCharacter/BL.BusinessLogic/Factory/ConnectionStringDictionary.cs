@@ -15,7 +15,7 @@ namespace BL.BusinessLogic.Factory
     {
         private Dictionary<int, string> _dndDictionary;
         private Dictionary<string, string> _dataDbDictionary;
-        private DndCharacterManagerContext _context
+        private DndCharacterManagerContext _context;
         public ConnectionStringDictionary(DndCharacterManagerContext context)
         {
             _context = context;

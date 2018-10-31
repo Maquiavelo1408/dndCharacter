@@ -13,6 +13,7 @@ namespace DAL.Model.Entities
         {
             CharacterSpells = new HashSet<CharacterSpell>();
             AbilityScores = new HashSet<AbilityScore>();
+            CharacterEquipments = new HashSet<CharacterEquipment>();
         }
 
         [Column("id_character")]
@@ -54,6 +55,18 @@ namespace DAL.Model.Entities
         [Column("max_hit_points")]
         public int MaxHitPoints { get; set; }
 
+        [Column("copper_coins")]
+        public int CopperCoins { get; set; }
+
+        [Column("silver_coins")]
+        public int SilverCoins { get; set; }
+
+        [Column("electrum_coins")]
+        public int ElectrumCoins { get; set; }
+
+        [Column("gold_coins")]
+        public int GoldCoins { get; set; }
+
         [InverseProperty("CharactersAligment"), ForeignKey("IdCAligment")]
         public virtual DataCollection Aligment { get; set; }
 
@@ -68,5 +81,8 @@ namespace DAL.Model.Entities
 
         [InverseProperty("Character")]
         public virtual ICollection<CharacterSkill> CharacterSkills { get; set; }
+
+        [InverseProperty("Character")]
+        public virtual ICollection<CharacterEquipment> CharacterEquipments { get; set; }
     }
 }
