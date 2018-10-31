@@ -11,6 +11,7 @@ namespace BL.BusinessLogic.ViewModel
         public string Name { get; set; }
         public string Level { get; set; }
         public int IdCAligment { get; set; }
+        public string ValueAligment { get; set; }
         public int IdClass { get; set; }
         public string PlayerName { get; set; }
         public int IdRace { get; set; }

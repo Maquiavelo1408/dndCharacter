@@ -11,7 +11,8 @@ namespace BL.BusinessLogic.ViewModels.Mappings
     {
         public DomainToViewModelMappingProfile()
         {
-            CreateMap<Character, CharacterViewModel>();
+            CreateMap<Character, CharacterViewModel>()
+                .ForMember(vm=> vm.ValueAligment, m=> m.MapFrom(e=> e.Aligment.Value));
             CreateMap<CharacterViewModel, Character>();
         }
     }
