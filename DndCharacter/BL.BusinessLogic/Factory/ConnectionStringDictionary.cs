@@ -25,9 +25,9 @@ namespace BL.BusinessLogic.Factory
 
         public string GetConnectionString(int id, bool rebuild = true)
         {
-            if(rebuild)
-                if(_dndDictionary == null)
-                    Build
+            if (rebuild)
+                if (_dndDictionary == null)
+                    BuildDictionaryConIdDnd();
         }
 
         public void BuildDictionaryConIdDnd()

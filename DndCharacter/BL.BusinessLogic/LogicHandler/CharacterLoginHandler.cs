@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using BL.BusinessLogic.ViewModel;
 using static DAL.Data.DndCharacterManagerContext;
 
 namespace BL.BusinessLogic.LogicHandler
@@ -11,6 +12,13 @@ namespace BL.BusinessLogic.LogicHandler
         public CharacterLoginHandler()
         {
 
+        }
+
+        public CharacterViewModel GetCharacterById(int id)
+        {
+
+
+            return new CharacterViewModel();
         }
     }
 }

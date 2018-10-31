@@ -12,6 +12,7 @@ namespace DAL.Model.Entities
         public Character()
         {
             CharacterSpells = new HashSet<CharacterSpell>();
+            AbilityScores = new HashSet<AbilityScore>();
         }
 
         [Column("id_character")]
@@ -61,5 +62,11 @@ namespace DAL.Model.Entities
 
         [InverseProperty("CharacterClasses"), ForeignKey("IdClass")]
         public virtual Class Class { get; set; }
+
+        [InverseProperty("Character")]
+        public virtual ICollection<AbilityScore> AbilityScores { get; set; }
+
+        [InverseProperty("Character")]
+        public virtual ICollection<CharacterSkill> CharacterSkills { get; set; }
     }
 }
