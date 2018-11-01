@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
@@ -8,7 +9,7 @@ namespace DAL.Model.Entities
     [Table("skill")]
     public class Skill
     {
-        [Column("id_skill")]
+        [Column("id_skill"), Key]
         public int IdSkill { get; set; }
 
         [Column("name")]

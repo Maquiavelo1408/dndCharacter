@@ -41,6 +41,10 @@ namespace DAL.Data
                 .HasKey(k => new { k.IdSpell, k.IdCClass });
             modelBuilder.Entity<CharacterEquipment>()
                 .HasKey(k => new { k.IdCharacter, k.IdEquipment });
+            modelBuilder.Entity<AbilityScore>()
+                .HasKey(k => new { k.IdCAbilityScore, k.IdCharacter });
+            modelBuilder.Entity<CharacterSkill>()
+                .HasKey(k => new { k.IdCharacter, k.IdSkill });
 
         }
         public class DndContextFactory
