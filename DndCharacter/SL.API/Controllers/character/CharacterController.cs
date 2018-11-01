@@ -2,101 +2,45 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BL.BusinessLogic.LogicHandler;
+using BL.BusinessLogic.ViewModel;
+using DAL.Data.Repository;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
+using SL.API.Common;
 
 namespace SL.API.Controllers
 { 
-    [Route("api/[controller]")]
+    [Route("api/character/[controller]")]
     [ApiController]
-    public class CharacterController : Controller
+    public class CharacterController : BaseController
     {
-        private readonly DndCharacter.Character _character;
-        public CharacterController(DndCharacter.Character character)
+        private readonly CharacterLoginHandler _characterLoginHandler;
+        private readonly IRequestHandler _requestHandler;
+
+        public CharacterController(IResponseFormatter responseFormatter, DndRepository repository, CharacterLoginHandler characterLoginHandler, IRequestHandler requestHandler) : base(responseFormatter, repository)
         {
-            _character = character;
-        }
-        // GET: Character
-        [Route("characterdata")]
-        public JObject Index()
-        {
-            return _character.GetData();
+            _requestHandler = requestHandler;
+            _characterLoginHandler = characterLoginHandler;
         }
 
-        // GET: Character/Details/5
-        public ActionResult Details(int id)
+        [HttpGet("character/{id}", Name ="GetCharacterById")]
+        public IActionResult GetCharacterById(int id)
         {
-            return View();
-        }
-
-        // GET: Character/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: Character/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
-        {
+            var vm = new CharacterViewModel();
             try
             {
-                // TODO: Add insert logic here
-
-                return RedirectToAction(nameof(Index));
+                vm = _characterLoginHandler.GetCharacterById(id);
             }
-            catch
+            catch (Exception ex)
             {
-                return View();
+                _responseFormatter.SetError(ex);
+                return new BadRequestObjectResult(_responseFormatter.GetResponse());
             }
-        }
-
-        // GET: Character/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        // POST: Character/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
-            {
-                // TODO: Add update logic here
-
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: Character/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: Character/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
-
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            _responseFormatter.Add("character", vm);
+            return new OkObjectResult(_responseFormatter.GetResponse());
+            
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
@@ -12,7 +13,7 @@ namespace DAL.Model.Entities
         {
             CharacterEquipments = new HashSet<CharacterEquipment>();
         }
-        [Column("id_equipment")]
+        [Column("id_equipment"), Key]
         public int IdEquipment { get; set; }
 
         [Column("id_c_type_equipment")]
