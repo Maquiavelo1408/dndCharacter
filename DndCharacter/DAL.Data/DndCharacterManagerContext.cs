@@ -21,6 +21,7 @@ namespace DAL.Data
         public virtual DbSet<Equipment> Equipments { get; set; }
         public virtual DbSet<CharacterEquipment> CharacterEquipments { get; set; }
         public virtual DbSet<Feat> Feats { get; set; }
+        public virtual DbSet<FeatFeature> FeatFeatures { get; set; }
 
 
 
