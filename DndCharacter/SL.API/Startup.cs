@@ -32,7 +32,6 @@ namespace SL.API
             .UseSqlServer(Configuration.GetConnectionString("DndCharacterManagerConnection"), b => { b.MigrationsAssembly("SL.API"); b.EnableRetryOnFailure(); })
             .ConfigureWarnings(w => w.Throw(CoreEventId.IncludeIgnoredWarning)));
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-            services.AddScoped<DndCharacter.Character>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
