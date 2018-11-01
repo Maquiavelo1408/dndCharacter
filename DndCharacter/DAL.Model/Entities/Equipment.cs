@@ -1,0 +1,27 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Text;
+
+namespace DAL.Model.Entities
+{
+    [Table("equipment")]
+    public class Equipment
+    {
+        public Equipment()
+        {
+            CharacterEquipments = new HashSet<CharacterEquipment>();
+        }
+        [Column("id_equipment")]
+        public int IdEquipment { get; set; }
+
+        [Column("id_c_type_equipment")]
+        public int IdCTypeEquiment { get; set; }
+
+        [Column("cost")]
+        public string Cost { get; set; }
+
+        [InverseProperty("Equipment")]
+        public virtual ICollection<CharacterEquipment> CharacterEquipments { get; set; }
+    }
+}
