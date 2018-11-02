@@ -22,5 +22,7 @@ namespace DAL.Model.Entities
         [InverseProperty("Class")]
         public virtual ICollection<Character> CharacterClasses { get; set; }
 
+        [InverseProperty("Class")]
+        public virtual ICollection<SpellClass> SpellClasses { get; set; }
     }
 }
