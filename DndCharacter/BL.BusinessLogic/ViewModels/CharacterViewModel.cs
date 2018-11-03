@@ -21,5 +21,9 @@ namespace BL.BusinessLogic.ViewModel
         public int Initiative { get; set; }
         public int Speed { get; set; }
         public int MaxHitPoints { get; set; }
+        public int CopperCoins { get; set; }
+        public int SilverCoins { get; set; }
+        public int ElectrumCoins { get; set; }
+        public int GoldCoins { get; set; }
     }
 }
