@@ -14,6 +14,7 @@ namespace DAL.Model.Entities
             CharacterSpells = new HashSet<CharacterSpell>();
             AbilityScores = new HashSet<AbilityScore>();
             CharacterEquipments = new HashSet<CharacterEquipment>();
+            CharacterFeats = new HashSet<CharacterFeat>();
         }
 
         [Column("id_character")]
@@ -84,5 +85,8 @@ namespace DAL.Model.Entities
 
         [InverseProperty("Character")]
         public virtual ICollection<CharacterEquipment> CharacterEquipments { get; set; }
+
+        [InverseProperty("Character")]
+        public virtual ICollection<CharacterFeat> CharacterFeats { get; set; }
     }
 }

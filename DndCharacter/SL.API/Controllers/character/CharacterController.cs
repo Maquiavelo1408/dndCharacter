@@ -2,101 +2,122 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BL.BusinessLogic.LogicHandler;
+using BL.BusinessLogic.Validations;
+using BL.BusinessLogic.ViewModel;
+using DAL.Data.Repository;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
+using SL.API.Common;
 
 namespace SL.API.Controllers
 { 
-    [Route("api/[controller]")]
+    [Route("api/character/[controller]")]
     [ApiController]
-    public class CharacterController : Controller
+    public class CharacterController : BaseController
     {
-        private readonly DndCharacter.Character _character;
-        public CharacterController(DndCharacter.Character character)
+        private readonly CharacterLoginHandler _characterLoginHandler;
+        private readonly IRequestHandler _requestHandler;
+
+        public CharacterController(IResponseFormatter responseFormatter, DndRepository repository, CharacterLoginHandler characterLoginHandler, IRequestHandler requestHandler) : base(responseFormatter, repository)
         {
-            _character = character;
+            _requestHandler = requestHandler;
+            _characterLoginHandler = characterLoginHandler;
         }
-        // GET: Character
-        [Route("characterdata")]
-        public JObject Index()
+        #region Character
+        [HttpGet("character", Name = "GetCharacter")]
+        public IActionResult GetCharacter()
         {
-            return _character.GetData();
+            var viewModel = new List<CharacterViewModel>();
+            try
+            {
+                viewModel = _characterLoginHandler.GetCharacters();
+            }
+            catch (Exception ex)
+            {
+                _responseFormatter.SetError(ex);
+                return new BadRequestObjectResult(_responseFormatter.GetResponse());
+            }
+            _responseFormatter.Add("characters", viewModel);
+            return new OkObjectResult(_responseFormatter.GetResponse());
         }
 
-        // GET: Character/Details/5
-        public ActionResult Details(int id)
+        [HttpGet("character/{id}", Name ="GetCharacterById")]
+        public IActionResult GetCharacterById(int id)
         {
-            return View();
+            var vm = new CharacterViewModel();
+            try
+            {
+                vm = _characterLoginHandler.GetCharacterById(id);
+            }
+            catch (Exception ex)
+            {
+                _responseFormatter.SetError(ex);
+                return new BadRequestObjectResult(_responseFormatter.GetResponse());
+            }
+            _responseFormatter.Add("character", vm);
+            return new OkObjectResult(_responseFormatter.GetResponse());
         }
 
-        // GET: Character/Create
-        public ActionResult Create()
+        [HttpPost("character", Name = "CreateCharacter")]
+        public IActionResult CreateCharacter([FromBody] JObject jsonData)
         {
-            return View();
+            var viewModelValidation = _requestHandler.ViewModelValidation(jsonData, "character", new CharacterViewModelValidator());
+            if (viewModelValidation.Result != null)
+                return viewModelValidation.Result;
+
+            var viewModel = viewModelValidation.ViewModel;
+            try
+            {
+                viewModel = _characterLoginHandler.CreateCharacter(viewModel);
+            }
+            catch (Exception ex)
+            {
+                _responseFormatter.SetError(ex);
+                return new BadRequestObjectResult(_responseFormatter.GetResponse());
+            }
+            _responseFormatter.Add("character", viewModel);
+            return new OkObjectResult(_responseFormatter.GetResponse());
         }
 
-        // POST: Character/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        [HttpPut("character", Name = "UpdateCharacter")]
+        public IActionResult UpdateCharacter([FromBody] JObject jsonData)
+        {
+            var viewModelValidation = _requestHandler.ViewModelValidation(jsonData, "character", new CharacterViewModelValidator());
+            if (viewModelValidation.Result != null)
+                return viewModelValidation.Result;
+
+            var viewModel = viewModelValidation.ViewModel;
+
+            try
+            {
+                viewModel = _characterLoginHandler.UpdateCharacter(viewModel);
+            }
+            catch (Exception ex)
+            {
+                _responseFormatter.SetError(ex);
+                return new BadRequestObjectResult(_responseFormatter.GetResponse());
+            }
+            _responseFormatter.Add("character", viewModel);
+            return new OkObjectResult(_responseFormatter.GetResponse());
+        }
+
+        [HttpDelete("character/{id}", Name ="DeleteCharacter")]
+        public IActionResult DeleteCharacter(int id)
         {
             try
             {
-                // TODO: Add insert logic here
-
-                return RedirectToAction(nameof(Index));
+                _characterLoginHandler.DeleteCharacter(id);
             }
-            catch
+            catch (Exception ex)
             {
-                return View();
+                _responseFormatter.SetError(ex);
+                return new BadRequestObjectResult(_responseFormatter.GetResponse());
             }
+            _responseFormatter.SetMessage("Personaje borrado");
+            return new OkObjectResult(_responseFormatter.GetResponse());
         }
-
-        // GET: Character/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        // POST: Character/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
-            {
-                // TODO: Add update logic here
-
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: Character/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: Character/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
-
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
+        #endregion
     }
 }

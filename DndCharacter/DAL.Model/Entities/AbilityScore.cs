@@ -23,6 +23,9 @@ namespace DAL.Model.Entities
         [Column("ability_modifier")]
         public int AbilityModifier { get; set; }
 
+        [InverseProperty("AbilityScores"), ForeignKey("IdCAbilityScore")]
+        public virtual DataCollection AbilityScoreCollection { get; set; }
+
         [InverseProperty("AbilityScores"), ForeignKey("IdCharacter")]
         public virtual Character Character { get; set; }
     }

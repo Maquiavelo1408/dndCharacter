@@ -8,6 +8,12 @@ namespace DAL.Model.Entities
     [Table("data_collection")]
     public class DataCollection
     {
+        public DataCollection()
+        {
+            CharactersAligment = new HashSet<Character>();
+            AbilityScores = new HashSet<AbilityScore>();
+            TypesEquipment = new HashSet<Equipment>();
+        }
         [Column("id_data_collection")]
         public int Id { get; set; }
 
@@ -22,5 +28,17 @@ namespace DAL.Model.Entities
 
         [InverseProperty("Aligment")]
         public virtual ICollection<Character> CharactersAligment { get; set; }
+
+        [InverseProperty("AbilityScoreCollection")]
+        public virtual ICollection<AbilityScore> AbilityScores { get; set; }
+
+        [InverseProperty("TypeEquipment")]
+        public virtual ICollection<Equipment> TypesEquipment { get; set; }
+
+        [InverseProperty("TypeFeat")]
+        public virtual ICollection<FeatFeature> FeatFeatures { get; set; }
+
+        [InverseProperty("AbilityScoreSkill")]
+        public virtual ICollection<Skill> AbilitiesScoreSkill { get; set; }
     }
 }

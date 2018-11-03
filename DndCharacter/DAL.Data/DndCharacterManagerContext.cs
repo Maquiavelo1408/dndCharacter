@@ -20,8 +20,9 @@ namespace DAL.Data
         public virtual DbSet<Class> Classes { get; set; }
         public virtual DbSet<Equipment> Equipments { get; set; }
         public virtual DbSet<CharacterEquipment> CharacterEquipments { get; set; }
-
-
+        public virtual DbSet<Feat> Feats { get; set; }
+        public virtual DbSet<FeatFeature> FeatFeatures { get; set; }
+        public virtual DbSet<CharacterFeat> CharacterFeats { get; set; }
 
 
 
@@ -37,10 +38,15 @@ namespace DAL.Data
             modelBuilder.Entity<CharacterSpell>()
                 .HasKey(k => new { k.IdCharacter, k.IdSpell });
             modelBuilder.Entity<SpellClass>()
-                .HasKey(k => new { k.IdSpell, k.IdCClass });
+                .HasKey(k => new { k.IdSpell, k.IdClass });
             modelBuilder.Entity<CharacterEquipment>()
                 .HasKey(k => new { k.IdCharacter, k.IdEquipment });
-
+            modelBuilder.Entity<AbilityScore>()
+                .HasKey(k => new { k.IdCAbilityScore, k.IdCharacter });
+            modelBuilder.Entity<CharacterSkill>()
+                .HasKey(k => new { k.IdCharacter, k.IdSkill });
+            modelBuilder.Entity<CharacterFeat>()
+                .HasKey(k => new { k.IdCharacter, k.IdFeat });
         }
         public class DndContextFactory
         {

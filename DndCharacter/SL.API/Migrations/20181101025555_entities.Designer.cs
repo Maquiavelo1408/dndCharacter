@@ -3,14 +3,16 @@ using DAL.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace SL.API.Migrations
 {
     [DbContext(typeof(DndCharacterManagerContext))]
-    partial class DndCharacterManagerContextModelSnapshot : ModelSnapshot
+    [Migration("20181101025555_entities")]
+    partial class entities
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -124,21 +126,6 @@ namespace SL.API.Migrations
                     b.ToTable("character_equipment");
                 });
 
-            modelBuilder.Entity("DAL.Model.Entities.CharacterFeat", b =>
-                {
-                    b.Property<int>("IdCharacter")
-                        .HasColumnName("id_character");
-
-                    b.Property<int>("IdFeat")
-                        .HasColumnName("id_feat");
-
-                    b.HasKey("IdCharacter", "IdFeat");
-
-                    b.HasIndex("IdFeat");
-
-                    b.ToTable("character_feat");
-                });
-
             modelBuilder.Entity("DAL.Model.Entities.CharacterSkill", b =>
                 {
                     b.Property<int>("IdCharacter")
@@ -243,50 +230,6 @@ namespace SL.API.Migrations
                     b.ToTable("equipment");
                 });
 
-            modelBuilder.Entity("DAL.Model.Entities.Feat", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnName("id_feat")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Description")
-                        .HasColumnName("description");
-
-                    b.Property<string>("Name")
-                        .HasColumnName("name");
-
-                    b.Property<string>("Prereqisite")
-                        .HasColumnName("prerequisite");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("feat");
-                });
-
-            modelBuilder.Entity("DAL.Model.Entities.FeatFeature", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnName("id_feat_feature")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("AddedAmount")
-                        .HasColumnName("added_amount");
-
-                    b.Property<int>("IdCTypeFeat")
-                        .HasColumnName("id_c_type_feat");
-
-                    b.Property<int>("IdFeat")
-                        .HasColumnName("id_feat");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("IdFeat");
-
-                    b.ToTable("feat_feature");
-                });
-
             modelBuilder.Entity("DAL.Model.Entities.Skill", b =>
                 {
                     b.Property<int>("IdSkill")
@@ -331,12 +274,10 @@ namespace SL.API.Migrations
                     b.Property<int>("IdSpell")
                         .HasColumnName("id_spell");
 
-                    b.Property<int>("IdClass")
+                    b.Property<int>("IdCClass")
                         .HasColumnName("id_c_class");
 
-                    b.HasKey("IdSpell", "IdClass");
-
-                    b.HasIndex("IdClass");
+                    b.HasKey("IdSpell", "IdCClass");
 
                     b.ToTable("spell_class");
                 });
@@ -375,19 +316,6 @@ namespace SL.API.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("DAL.Model.Entities.CharacterFeat", b =>
-                {
-                    b.HasOne("DAL.Model.Entities.Character", "Character")
-                        .WithMany("CharacterFeats")
-                        .HasForeignKey("IdCharacter")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("DAL.Model.Entities.Feat", "Feat")
-                        .WithMany("CharacterFeats")
-                        .HasForeignKey("IdFeat")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
             modelBuilder.Entity("DAL.Model.Entities.CharacterSkill", b =>
                 {
                     b.HasOne("DAL.Model.Entities.Character", "Character")
@@ -419,27 +347,6 @@ namespace SL.API.Migrations
                     b.HasOne("DAL.Model.Entities.Collection", "Collection")
                         .WithMany("DataCollections")
                         .HasForeignKey("IdCollection")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("DAL.Model.Entities.FeatFeature", b =>
-                {
-                    b.HasOne("DAL.Model.Entities.Feat", "Feat")
-                        .WithMany("FeatFeatures")
-                        .HasForeignKey("IdFeat")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("DAL.Model.Entities.SpellClass", b =>
-                {
-                    b.HasOne("DAL.Model.Entities.Class", "Class")
-                        .WithMany("SpellClasses")
-                        .HasForeignKey("IdClass")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("DAL.Model.Entities.Spell", "Spell")
-                        .WithMany("SpellClasses")
-                        .HasForeignKey("IdSpell")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618

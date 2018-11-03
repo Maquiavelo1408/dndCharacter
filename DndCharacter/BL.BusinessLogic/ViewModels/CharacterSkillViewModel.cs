@@ -4,14 +4,13 @@ using System.Text;
 
 namespace BL.BusinessLogic.ViewModels
 {
-    public class AbilityScoreViewModel
+    public class CharacterSkillViewModel
     {
         public int IdCharacter { get; set; }
         public string NameCharacter { get; set; }
-        public int IdCAbilityScore { get; set; }
-        public string ValueAbilityScore { get; set; }
+        public int IdSkill { get; set; }
+        public string NameSkill { get; set; }
         public int Value { get; set; }
         public bool Proficient { get; set; }
-        public int AbilityModifier { get; set; }
     }
 }
