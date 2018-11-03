@@ -13,6 +13,12 @@ namespace DAL.Model.Entities
         public int IdSpell { get; set; }
 
         [Column("id_c_class")]
-        public int IdCClass { get; set; }
+        public int IdClass { get; set; }
+
+        [InverseProperty("SpellClasses"), ForeignKey("IdSpell")]
+        public virtual Spell Spell { get; set; }
+
+        [InverseProperty("SpellClasses"), ForeignKey("IdClass")]
+        public virtual Class Class { get; set; }
     }
 }

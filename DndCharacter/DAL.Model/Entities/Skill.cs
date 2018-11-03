@@ -20,5 +20,8 @@ namespace DAL.Model.Entities
 
         [InverseProperty("Skill")]
         public virtual ICollection<CharacterSkill> CharacterSkills { get; set; }
+
+        [InverseProperty("AbilitiesScoreSkill"), ForeignKey("IdCAbilityScore")]
+        public virtual DataCollection AbilityScoreSkill { get; set; }
     }
 }

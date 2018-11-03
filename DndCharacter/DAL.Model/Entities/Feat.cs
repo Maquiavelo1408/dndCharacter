@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
@@ -12,8 +13,7 @@ namespace DAL.Model.Entities
         {
             FeatFeatures = new HashSet<FeatFeature>();
         }
-
-        [Column("id_feat")]
+        [Column("id_feat"), Key]
         public int Id { get; set; }
 
         [Column("name")]
@@ -23,9 +23,12 @@ namespace DAL.Model.Entities
         public string Description { get; set; }
 
         [Column("prerequisite")]
-        public string Prerequisite { get; set; }
+        public string Prereqisite { get; set; }
 
         [InverseProperty("Feat")]
-        public virtual ICollection<FeatFeature> FeatFeatures { get; set; }
+        public ICollection<FeatFeature> FeatFeatures { get; set; }
+
+        [InverseProperty("Feat")]
+        public ICollection<CharacterFeat> CharacterFeats { get; set; }
     }
 }

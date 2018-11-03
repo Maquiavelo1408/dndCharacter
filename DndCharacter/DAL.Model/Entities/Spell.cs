@@ -12,6 +12,7 @@ namespace DAL.Model.Entities
         public Spell()
         {
             CharacterSpells = new HashSet<CharacterSpell>();
+            SpellClasses = new HashSet<SpellClass>();
         }
 
         [Column("id_spell")]
@@ -28,5 +29,8 @@ namespace DAL.Model.Entities
 
         [InverseProperty("Spell")]
         public virtual ICollection<CharacterSpell> CharacterSpells { get; set; }
+
+        [InverseProperty("Spell")]
+        public virtual ICollection<SpellClass> SpellClasses { get; set; }
     }
 }

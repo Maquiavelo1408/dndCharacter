@@ -3,14 +3,16 @@ using DAL.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace SL.API.Migrations
 {
     [DbContext(typeof(DndCharacterManagerContext))]
-    partial class DndCharacterManagerContextModelSnapshot : ModelSnapshot
+    [Migration("20181102020416_entity_feat")]
+    partial class entity_feat
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

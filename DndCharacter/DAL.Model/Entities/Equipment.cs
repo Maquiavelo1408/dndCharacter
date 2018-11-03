@@ -16,6 +16,9 @@ namespace DAL.Model.Entities
         [Column("id_equipment"), Key]
         public int IdEquipment { get; set; }
 
+        [Column("name")]
+        public string Name { get; set; }
+
         [Column("id_c_type_equipment")]
         public int IdCTypeEquiment { get; set; }
 
@@ -24,5 +27,8 @@ namespace DAL.Model.Entities
 
         [InverseProperty("Equipment")]
         public virtual ICollection<CharacterEquipment> CharacterEquipments { get; set; }
+
+        [InverseProperty("TypesEquipment"), ForeignKey("IdCTypeEquipment")]
+        public virtual DataCollection TypeEquipment { get; set; }
     }
 }
