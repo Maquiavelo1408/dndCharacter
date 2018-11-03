@@ -37,7 +37,7 @@ namespace BL.BusinessLogic.LogicHandler
             var character = Mapper.Map<CharacterViewModel, Character>(viewModel);
             if(_dndRepository.GetSingle<Character>(a=> a.Id == viewModel.Id) != null)
             {
-                throw new Exception("Este personaje ya existe");
+                throw new Exception(string.Format(Resources.Resources.Entity_AlredyExist, nameof(Character)));
             }
             _dndRepository.Add(character);
             _dndRepository.Commit();
@@ -49,7 +49,7 @@ namespace BL.BusinessLogic.LogicHandler
         {
             var character = _dndRepository.GetSingle<Character>(a => a.Id == viewModel.Id);
             if (character == null)
-                throw new Exception("Personaje no existe");
+                throw new Exception(string.Format(Resources.Resources.EntityM_NotFound, nameof(Character)));
 
             character.Name = viewModel.Name;
             character.Level = viewModel.Level;
@@ -77,7 +77,7 @@ namespace BL.BusinessLogic.LogicHandler
         {
             var character = _dndRepository.GetSingle<Character>(a => a.Id == idCharacter);
             if (character == null)
-                throw new Exception("Personaje no existe");
+                throw new Exception(string.Format(Resources.Resources.Entity_AlredyExist, nameof(Character)));
             try
             {
                 _dndRepository.Delete(character);
