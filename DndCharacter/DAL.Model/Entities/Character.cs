@@ -15,6 +15,7 @@ namespace DAL.Model.Entities
             AbilityScores = new HashSet<AbilityScore>();
             CharacterEquipments = new HashSet<CharacterEquipment>();
             CharacterFeats = new HashSet<CharacterFeat>();
+            CharacterSkills = new HashSet<CharacterSkill>();
         }
 
         [Column("id_character")]

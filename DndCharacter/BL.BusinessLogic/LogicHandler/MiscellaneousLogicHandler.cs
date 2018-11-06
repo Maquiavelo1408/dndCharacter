@@ -75,5 +75,56 @@ namespace BL.BusinessLogic.LogicHandler
             }
         }
         #endregion
+
+        #region Skill
+        public List<SkillViewModel> GetSkills()
+        {
+            var skills = _dndRepository.GetAll<Skill>().ToList();
+            return Mapper.Map<List<Skill>, List<SkillViewModel>>(skills);
+        }
+
+        public SkillViewModel GetSkillById(int id)
+        {
+            var skill = _dndRepository.GetSingle<Skill>(a => a.IdSkill == id, false, a => a.AbilityScoreSkill);
+            if (skill == null)
+                throw new Exception(string.Format(Resources.ValidationMessages.EntityF_Error_NotFound, nameof(Skill)));
+            return Mapper.Map<Skill, SkillViewModel>(skill);
+        }
+
+        public SkillViewModel CreateSkill(SkillViewModel viewModel)
+        {
+            var skill = _dndRepository.GetSingle<Skill>(a => a.IdSkill==viewModel.IdSkill);
+            if (skill != null)
+                throw new Exception(string.Format(Resources.ValidationMessages.EntityF_Error_AlredyExist, nameof(Skill)));
+            skill = Mapper.Map<SkillViewModel, Skill>(viewModel);
+            _dndRepository.Add(viewModel);
+            _dndRepository.Commit();
+            skill = _dndRepository.GetSingle<Skill>(a => a.IdSkill == skill.IdSkill);
+            return Mapper.Map<Skill, SkillViewModel>(skill);
+        }
+
+        public SkillViewModel UpdateSkill(SkillViewModel viewModel)
+        {
+            var skill = _dndRepository.GetSingle<Skill>(a => a.IdSkill == viewModel.IdSkill);
+            if (skill == null)
+                throw new Exception(string.Format(Resources.ValidationMessages.EntityF_Error_NotFound, nameof(Skill)));
+
+            skill.IdCAbilityScore = viewModel.IdCAbilityScore;
+            skill.Name = viewModel.Name;
+            _dndRepository.Update(skill);
+            _dndRepository.Commit();
+            skill = _dndRepository.GetSingle<Skill>(a => a.IdSkill == viewModel.IdSkill, false, a=> a.AbilityScoreSkill); ;
+            return Mapper.Map<Skill, SkillViewModel>(skill);
+        }
+
+        public void DeleteSkill(int id)
+        {
+            var skill = _dndRepository.GetSingle<Skill>(a => a.IdSkill == id);
+            if (skill == null)
+                throw new Exception(string.Format(Resources.ValidationMessages.EntityF_Error_NotFound, nameof(Skill)));
+            _dndRepository.Delete(skill);
+            _dndRepository.Commit();
+        }
+        #endregion
     }
 }

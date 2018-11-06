@@ -6,6 +6,7 @@ using BL.BusinessLogic.LogicHandler;
 using BL.BusinessLogic.Validations;
 using BL.BusinessLogic.ViewModel;
 using BL.BusinessLogic.ViewModels;
+using BL.BusinessLogic.
 using DAL.Data.Repository;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -24,7 +25,7 @@ namespace SL.API.Controllers.character
             _miscellaneousLogicHandler = miscellaneousLogicHandler;
             _requestHandler = requestHandler;
         }
-
+        #region Equipment
         [HttpGet("equipment", Name = "GetEquipment")]
         public IActionResult GetEquipment()
         {
@@ -58,7 +59,7 @@ namespace SL.API.Controllers.character
             }
         }
 
-        [HttpPost("equipmente", Name = "CreateEquipment")]
+        [HttpPost("equipment", Name = "CreateEquipment")]
         public IActionResult CreateEquipment([FromBody] JObject jsonData)
         {
             var viewModelValidations = _requestHandler.ViewModelValidation(jsonData, "equipment", new EquipmentViewModelValidator());
@@ -77,5 +78,65 @@ namespace SL.API.Controllers.character
                 return new BadRequestObjectResult(_responseFormatter.GetResponse());
             }
         }
+
+        [HttpPut("equipment", Name = "UpdateEquipment")]
+        public IActionResult UpdateEquipment([FromBody] JObject jsonData)
+        {
+            var viewModelValidation = _requestHandler.ViewModelValidation(jsonData, "equipment", new EquipmentViewModelValidator());
+            if (viewModelValidation.Result != null)
+                return viewModelValidation.Result;
+            var viewModel = viewModelValidation.ViewModel;
+            try
+            {
+                viewModel = _miscellaneousLogicHandler.UpdateEquipment(viewModel);
+                _responseFormatter.Add("equipment", viewModel);
+                return new OkObjectResult(_responseFormatter.GetResponse());
+            }
+            catch (Exception ex)
+            {
+                _responseFormatter.SetError(ex.Message);
+                return new BadRequestObjectResult(_responseFormatter.GetResponse());
+            }
+        }
+
+        [HttpDelete("equipment/{id}", Name ="DeleteEquipment")]
+        public IActionResult DeleteEquipment(int id)
+        {
+            try
+            {
+                _miscellaneousLogicHandler.DeleteEquipment(id);
+                _responseFormatter.SetMessage("Equipo borrado");
+                return new OkObjectResult(_responseFormatter.GetResponse());
+            }
+            catch (Exception ex)
+            {
+                _responseFormatter.SetError(ex.Message);
+                return new BadRequestObjectResult(_responseFormatter.GetResponse());
+            }
+        }
+        #endregion
+
+        #region Skill
+
+        [HttpGet("skill", Name ="GetSkills")]
+        public IActionResult GetSkills()
+        {
+            var viewModelList = new List<SkillViewModel>();
+            try
+            {
+                viewModelList = _miscellaneousLogicHandler.GetSkills();
+                _responseFormatter.Add("skills", viewModelList);
+                return new OkObjectResult(_responseFormatter.GetResponse());
+            }
+            catch (Exception ex)
+            {
+                _responseFormatter.SetError(ex.Message);
+                return new BadRequestObjectResult(_responseFormatter.GetResponse());
+            }
+        }
+
+        [HttpGet("skill/{id}", Name = " GetSkilByI")]
+
+        #endregion
     }
 }
