@@ -40,6 +40,7 @@ namespace SL.API
             services.AddScoped<IRequestHandler, RequestHandler>();
             services.AddScoped<DndRepository>();
             services.AddScoped<CharacterLoginHandler>();
+            services.AddScoped<MiscellaneousLogicHandler>();
 
 
             AutoMapperConfiguration.Configure();
