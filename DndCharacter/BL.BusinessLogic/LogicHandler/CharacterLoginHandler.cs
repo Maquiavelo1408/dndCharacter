@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using AutoMapper;
 using BL.BusinessLogic.ViewModel;
+using BL.BusinessLogic.ViewModels;
 using DAL.Data.Repository;
 using DAL.Model.Entities;
-using static DAL.Data.DndCharacterManagerContext;
 
 namespace BL.BusinessLogic.LogicHandler
 {
@@ -17,7 +17,7 @@ namespace BL.BusinessLogic.LogicHandler
         {
             _dndRepository = dndRepository;
         }
-
+        #region Character
         public List<CharacterViewModel> GetCharacters()
         {
             var characters = _dndRepository.GetAll<Character>().ToList();
@@ -35,11 +35,12 @@ namespace BL.BusinessLogic.LogicHandler
         public CharacterViewModel CreateCharacter(CharacterViewModel viewModel)
         {
             var character = Mapper.Map<CharacterViewModel, Character>(viewModel);
-            if(_dndRepository.GetSingle<Character>(a=> a.Id == viewModel.Id) != null)
+            if (_dndRepository.GetSingle<Character>(a => a.Id == viewModel.Id, true) != null)
             {
-                throw new Exception(string.Format(Resources.Resources.Entity_AlredyExist, nameof(Character)));
+                throw new Exception(string.Format(Resources.ValidationMessages.EntityM_Error_AlredyExist, nameof(Character)));
             }
             _dndRepository.Add(character);
+            
             _dndRepository.Commit();
             character = _dndRepository.GetSingle<Character>(a => a.Id == character.Id, false, a=> a.Aligment);
             return Mapper.Map<Character, CharacterViewModel>(character);
@@ -49,7 +50,7 @@ namespace BL.BusinessLogic.LogicHandler
         {
             var character = _dndRepository.GetSingle<Character>(a => a.Id == viewModel.Id);
             if (character == null)
-                throw new Exception(string.Format(Resources.Resources.EntityM_NotFound, nameof(Character)));
+                throw new Exception(string.Format(Resources.ValidationMessages.EntityM_Error_NotFound, nameof(Character)));
 
             character.Name = viewModel.Name;
             character.Level = viewModel.Level;
@@ -77,7 +78,7 @@ namespace BL.BusinessLogic.LogicHandler
         {
             var character = _dndRepository.GetSingle<Character>(a => a.Id == idCharacter);
             if (character == null)
-                throw new Exception(string.Format(Resources.Resources.Entity_AlredyExist, nameof(Character)));
+                throw new Exception(string.Format(Resources.ValidationMessages.EntityM_Error_AlredyExist, nameof(Character)));
             try
             {
                 _dndRepository.Delete(character);
@@ -85,9 +86,56 @@ namespace BL.BusinessLogic.LogicHandler
             }
             catch (Exception ex)
             {
-                throw new Exception("Hubo un problema borrando.");
+                throw new Exception(string.Format(Resources.ValidationMessages.EntityF_Error_Terminate, nameof(Character)));
             }
                 
         }
+        #endregion
+
+        #region Class
+        public List<ClassViewModel> GetClasses()
+        {
+            var classes = _dndRepository.GetAll<Class>().ToList();
+            return Mapper.Map<List<Class>, List<ClassViewModel>>(classes);
+        }
+
+        public ClassViewModel GetClassById(int id)
+        {
+            var entity = _dndRepository.GetSingle<Class>(a => a.Id == id, false);
+            return Mapper.Map<Class, ClassViewModel>(entity);
+        }
+
+        public ClassViewModel CreateClass(ClassViewModel viewModel)
+        {
+            var classEntity = Mapper.Map<ClassViewModel, Class>(viewModel);
+            if (_dndRepository.GetSingle<Class>(a => a.Id == viewModel.Id) != null)
+                throw new Exception(string.Format(Resources.ValidationMessages.EntityM_Error_AlredyExist, nameof(Class)));
+
+            _dndRepository.Add(classEntity);
+            _dndRepository.Commit();
+            classEntity = _dndRepository.GetSingle<Class>(a => a.Id == classEntity.Id, false);
+            return Mapper.Map<Class, ClassViewModel>(classEntity);
+        }
+
+        public ClassViewModel UpdateClass(ClassViewModel viewModel)
+        {
+            var entity = _dndRepository.GetSingle<Class>(a => a.Id == viewModel.Id);
+            if (entity == null)
+                throw new Exception(string.Format(Resources.ValidationMessages.EntityM_Error_NotFound, nameof(Class)));
+            entity.Name = viewModel.Name;
+            _dndRepository.Update(entity);
+            _dndRepository.Commit();
+            return Mapper.Map<Class, ClassViewModel>(_dndRepository.GetSingle<Class>(a => a.Id == viewModel.Id));
+        }
+
+        public void DeleteClass(int id)
+        {
+            var entity = _dndRepository.GetSingle<Class>(a => a.Id == id);
+            if (entity == null)
+                throw new Exception(string.Format(Resources.ValidationMessages.EntityM_Error_NotFound, nameof(Class)));
+            _dndRepository.Delete(entity);
+            _dndRepository.Commit();
+        }
+        #endregion
     }
 }

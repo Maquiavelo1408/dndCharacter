@@ -4,14 +4,16 @@ using DAL.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace SL.API.Migrations
 {
     [DbContext(typeof(DndCharacterManagerContext))]
-    partial class DndCharacterManagerContextModelSnapshot : ModelSnapshot
+    [Migration("20181106014452_entities_update")]
+    partial class entities_update
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -38,7 +40,7 @@ namespace SL.API.Migrations
 
                     b.HasKey("IdCharacter", "IdCAbilityScore");
 
-                    b.HasIndex("IdCAbilityScore");
+                    b.HasAlternateKey("IdCharacter");
 
                     b.ToTable("ability_score");
                 });
@@ -355,11 +357,6 @@ namespace SL.API.Migrations
 
             modelBuilder.Entity("DAL.Model.Entities.AbilityScore", b =>
                 {
-                    b.HasOne("DAL.Model.Entities.DataCollection", "AbilityScoreCollection")
-                        .WithMany("AbilityScores")
-                        .HasForeignKey("IdCAbilityScore")
-                        .OnDelete(DeleteBehavior.Cascade);
-
                     b.HasOne("DAL.Model.Entities.Character", "Character")
                         .WithMany("AbilityScores")
                         .HasForeignKey("IdCharacter")

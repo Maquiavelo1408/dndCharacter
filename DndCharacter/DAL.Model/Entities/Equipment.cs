@@ -20,7 +20,7 @@ namespace DAL.Model.Entities
         public string Name { get; set; }
 
         [Column("id_c_type_equipment")]
-        public int IdCTypeEquiment { get; set; }
+        public int IdCTypeEquipment { get; set; }
 
         [Column("cost")]
         public string Cost { get; set; }

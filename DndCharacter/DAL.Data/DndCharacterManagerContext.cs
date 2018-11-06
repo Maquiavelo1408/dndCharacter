@@ -11,19 +11,21 @@ namespace DAL.Data
 {
     public partial class DndCharacterManagerContext : DbContext
     {
+        public virtual DbSet<AbilityScore> AbilityScores { get; set; }
         public virtual DbSet<Character> Characters { get; set; }
-        public virtual DbSet<Spell> Spells { get; set; }
+        public virtual DbSet<CharacterEquipment> CharacterEquipments { get; set; }
+        public virtual DbSet<CharacterFeat> CharacterFeats { get; set; }
+        public virtual DbSet<CharacterSkill> CharacterSkills { get; set; }
         public virtual DbSet<CharacterSpell> CharacterSpells { get; set; }
-        public virtual DbSet<SpellClass> SpellClasses { get; set; }
+        public virtual DbSet<Class> Classes { get; set; }
         public virtual DbSet<Collection> Collections { get; set; }
         public virtual DbSet<DataCollection> DataCollections { get; set; }
-        public virtual DbSet<Class> Classes { get; set; }
         public virtual DbSet<Equipment> Equipments { get; set; }
-        public virtual DbSet<CharacterEquipment> CharacterEquipments { get; set; }
         public virtual DbSet<Feat> Feats { get; set; }
         public virtual DbSet<FeatFeature> FeatFeatures { get; set; }
-        public virtual DbSet<CharacterFeat> CharacterFeats { get; set; }
-
+        public virtual DbSet<Skill> Skills { get; set; }
+        public virtual DbSet<Spell> Spells { get; set; }
+        public virtual DbSet<SpellClass> SpellClasses { get; set; }
 
 
 
@@ -35,14 +37,14 @@ namespace DAL.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<AbilityScore>()
+                .HasKey(k => new { k.IdCharacter, k.IdCAbilityScore });
             modelBuilder.Entity<CharacterSpell>()
                 .HasKey(k => new { k.IdCharacter, k.IdSpell });
             modelBuilder.Entity<SpellClass>()
                 .HasKey(k => new { k.IdSpell, k.IdClass });
             modelBuilder.Entity<CharacterEquipment>()
                 .HasKey(k => new { k.IdCharacter, k.IdEquipment });
-            modelBuilder.Entity<AbilityScore>()
-                .HasKey(k => new { k.IdCAbilityScore, k.IdCharacter });
             modelBuilder.Entity<CharacterSkill>()
                 .HasKey(k => new { k.IdCharacter, k.IdSkill });
             modelBuilder.Entity<CharacterFeat>()

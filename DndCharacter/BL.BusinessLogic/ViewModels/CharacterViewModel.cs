@@ -2,11 +2,16 @@
 using System.Collections.Generic;
 using System.Text;
 using BL.BusinessLogic.Collections;
+using BL.BusinessLogic.ViewModels;
 
 namespace BL.BusinessLogic.ViewModel
 {
     public class CharacterViewModel
     {
+        public CharacterViewModel()
+        {
+            CharacterEquipments = new HashSet<CharacterEquipmentViewModel>();
+        }
         public int Id { get; set; }
         public string Name { get; set; }
         public string Level { get; set; }
@@ -25,5 +30,6 @@ namespace BL.BusinessLogic.ViewModel
         public int SilverCoins { get; set; }
         public int ElectrumCoins { get; set; }
         public int GoldCoins { get; set; }
+        public ICollection<CharacterEquipmentViewModel> CharacterEquipments { get; set; }
     }
 }

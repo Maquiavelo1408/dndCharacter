@@ -8,7 +8,7 @@ namespace BL.BusinessLogic.ViewModels
     {
         public int IdEquipment { get; set; }
         public string Name { get; set; }
-        public int IdCTypeEquiment { get; set; }
+        public int IdCTypeEquipment { get; set; }
         public string ValueTypeEquipment { get; set; }
         public string Cost { get; set; }
     }
