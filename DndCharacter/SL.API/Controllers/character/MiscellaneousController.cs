@@ -6,7 +6,6 @@ using BL.BusinessLogic.LogicHandler;
 using BL.BusinessLogic.Validations;
 using BL.BusinessLogic.ViewModel;
 using BL.BusinessLogic.ViewModels;
-using BL.BusinessLogic.
 using DAL.Data.Repository;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -50,7 +49,7 @@ namespace SL.API.Controllers.character
             {
                 viewModel = _miscellaneousLogicHandler.GetEquipmentById(id);
                 _responseFormatter.Add("equipment", viewModel);
-                return new OkObjectResult(viewModel);
+                return new OkObjectResult(_responseFormatter.GetResponse());
             }
             catch (Exception ex)
             {
@@ -135,8 +134,78 @@ namespace SL.API.Controllers.character
             }
         }
 
-        [HttpGet("skill/{id}", Name = " GetSkilByI")]
+        [HttpGet("skill/{id}", Name = " GetSkilById")]
+        public IActionResult GetSkilById(int id)
+        {
+            var viewModel = new SkillViewModel();
+            try
+            {
+                viewModel = _miscellaneousLogicHandler.GetSkillById(id);
+                _responseFormatter.Add("skill", viewModel);
+                return new OkObjectResult(_responseFormatter.GetResponse());
+            }
+            catch (Exception ex)
+            {
+                _responseFormatter.SetError(ex.Message);
+                return new BadRequestObjectResult(_responseFormatter.GetResponse());
+            }
+        }
 
+        [HttpPost("skill", Name ="CreateSkill")]
+        public IActionResult CreateSkill([FromBody] JObject jsonData)
+        {
+            var viewModelValidation = _requestHandler.ViewModelValidation(jsonData, "skill", new SkillViewModelValidator());
+            if (viewModelValidation.Result != null)
+                return viewModelValidation.Result;
+            var viewModel = viewModelValidation.ViewModel;
+            try
+            {
+                viewModel = _miscellaneousLogicHandler.CreateSkill(viewModel);
+                _responseFormatter.Add("skill", viewModel);
+                return new OkObjectResult(_responseFormatter.GetResponse());
+            }
+            catch (Exception ex)
+            {
+                _responseFormatter.SetError(ex.Message);
+                return new BadRequestObjectResult(_responseFormatter.GetResponse());
+            }
+        }
+
+        [HttpPut("skill", Name = "UpdateSkill")]
+        public IActionResult UpdateSkill([FromBody] JObject jsonData)
+        {
+            var viewModelValidation = _requestHandler.ViewModelValidation(jsonData, "skill", new SkillViewModelValidator());
+            if (viewModelValidation.Result != null)
+                return viewModelValidation.Result;
+            var viewModel = viewModelValidation.ViewModel;
+            try
+            {
+                viewModel = _miscellaneousLogicHandler.UpdateSkill(viewModel);
+                _responseFormatter.Add("skill", viewModel);
+                return new OkObjectResult(_responseFormatter.GetResponse());
+            }
+            catch (Exception ex)
+            {
+                _responseFormatter.SetError(ex.Message);
+                return new BadRequestObjectResult(_responseFormatter.GetResponse());
+            }
+        }
+
+        [HttpDelete("skill/{id}", Name ="DeleteSkill")]
+        public IActionResult DeleteSkill(int id)
+        {
+            try
+            {
+                _miscellaneousLogicHandler.DeleteSkill(id);
+            }
+            catch (Exception ex)
+            {
+                _responseFormatter.SetError(ex.Message);
+                return new BadRequestObjectResult(_responseFormatter.GetResponse());
+            }
+            _responseFormatter.SetMessage("Skill borrado");
+            return new OkObjectResult(_responseFormatter.GetResponse());
+        }
         #endregion
     }
 }

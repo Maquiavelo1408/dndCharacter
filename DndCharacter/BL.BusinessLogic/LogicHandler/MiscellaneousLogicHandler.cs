@@ -42,7 +42,7 @@ namespace BL.BusinessLogic.LogicHandler
                 entity = Mapper.Map<EquipmentViewModel, Equipment>(viewModel);
             _dndRepository.Add(entity);
             _dndRepository.Commit();
-            entity = _dndRepository.GetSingle<Equipment>(a => a.IdEquipment == viewModel.IdEquipment, false, a=> a.TypeEquipment);
+            entity = _dndRepository.GetSingle<Equipment>(a => a.IdEquipment == entity.IdEquipment, false, a=> a.TypeEquipment);
             return Mapper.Map<Equipment, EquipmentViewModel>(entity);
         }
 
@@ -63,7 +63,7 @@ namespace BL.BusinessLogic.LogicHandler
 
         public void DeleteEquipment(int id)
         {
-            var entity = GetEquipmentById(id);
+            var entity = _dndRepository.GetSingle<Equipment>(a => a.IdEquipment == id, false, a => a.TypeEquipment);
             try
             {
                 _dndRepository.Delete(entity);
@@ -97,9 +97,9 @@ namespace BL.BusinessLogic.LogicHandler
             if (skill != null)
                 throw new Exception(string.Format(Resources.ValidationMessages.EntityF_Error_AlredyExist, nameof(Skill)));
             skill = Mapper.Map<SkillViewModel, Skill>(viewModel);
-            _dndRepository.Add(viewModel);
+            _dndRepository.Add(skill);
             _dndRepository.Commit();
-            skill = _dndRepository.GetSingle<Skill>(a => a.IdSkill == skill.IdSkill);
+            skill = _dndRepository.GetSingle<Skill>(a => a.IdSkill == skill.IdSkill, false, a=> a.AbilityScoreSkill);
             return Mapper.Map<Skill, SkillViewModel>(skill);
         }
 
