@@ -11,7 +11,8 @@ namespace DAL.Model.Entities
     {
         public Feat()
         {
-            FeatFeatures = new HashSet<FeatFeature>();
+            FeatFeatures = new HashSet<Feature>();
+            CharacterFeats = new HashSet<CharacterFeat>();
         }
         [Column("id_feat"), Key]
         public int Id { get; set; }
@@ -25,10 +26,16 @@ namespace DAL.Model.Entities
         [Column("prerequisite")]
         public string Prereqisite { get; set; }
 
-        [InverseProperty("Feat")]
-        public ICollection<FeatFeature> FeatFeatures { get; set; }
+        [Column("id_race")]
+        public int ? IdRace { get; set; }
 
         [InverseProperty("Feat")]
-        public ICollection<CharacterFeat> CharacterFeats { get; set; }
+        public virtual ICollection<Feature> FeatFeatures { get; set; }
+
+        [InverseProperty("Feat")]
+        public virtual ICollection<CharacterFeat> CharacterFeats { get; set; }
+    
+        [InverseProperty("FeatsRace"), ForeignKey("IdRace")]
+        public virtual  Race Race { get; set; }
     }
 }

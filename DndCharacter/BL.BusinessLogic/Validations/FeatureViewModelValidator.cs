@@ -6,9 +6,9 @@ using FluentValidation;
 
 namespace BL.BusinessLogic.Validations
 {
-    public class FeatFeatureViewModelValidator : AbstractValidator<FeatFeatureViewModel>
+    public class FeatureViewModelValidator : AbstractValidator<FeatureViewModel>
     {
-        public FeatFeatureViewModelValidator()
+        public FeatureViewModelValidator()
         {
 
         }

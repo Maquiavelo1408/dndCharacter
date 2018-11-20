@@ -72,6 +72,9 @@ namespace DAL.Model.Entities
         [InverseProperty("CharactersAligment"), ForeignKey("IdCAligment")]
         public virtual DataCollection Aligment { get; set; }
 
+        [InverseProperty("CharacterRace"), ForeignKey("IdRace")]
+        public virtual Race Race { get; set; }
+
         [InverseProperty("Character")]
         public virtual ICollection<CharacterSpell> CharacterSpells { get; set; }
 

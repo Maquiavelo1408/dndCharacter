@@ -22,11 +22,11 @@ namespace DAL.Data
         public virtual DbSet<DataCollection> DataCollections { get; set; }
         public virtual DbSet<Equipment> Equipments { get; set; }
         public virtual DbSet<Feat> Feats { get; set; }
-        public virtual DbSet<FeatFeature> FeatFeatures { get; set; }
+        public virtual DbSet<Feature> FeatFeatures { get; set; }
         public virtual DbSet<Skill> Skills { get; set; }
         public virtual DbSet<Spell> Spells { get; set; }
         public virtual DbSet<SpellClass> SpellClasses { get; set; }
-
+        public virtual DbSet<Race> Races { get; set; }
 
 
 

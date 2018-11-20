@@ -98,7 +98,7 @@ namespace SL.API.Controllers.character
             }
         }
 
-        [HttpDelete("equipment/{id}", Name ="DeleteEquipment")]
+        [HttpDelete("equipment/{id}", Name = "DeleteEquipment")]
         public IActionResult DeleteEquipment(int id)
         {
             try
@@ -117,7 +117,7 @@ namespace SL.API.Controllers.character
 
         #region Skill
 
-        [HttpGet("skill", Name ="GetSkills")]
+        [HttpGet("skill", Name = "GetSkills")]
         public IActionResult GetSkills()
         {
             var viewModelList = new List<SkillViewModel>();
@@ -151,7 +151,7 @@ namespace SL.API.Controllers.character
             }
         }
 
-        [HttpPost("skill", Name ="CreateSkill")]
+        [HttpPost("skill", Name = "CreateSkill")]
         public IActionResult CreateSkill([FromBody] JObject jsonData)
         {
             var viewModelValidation = _requestHandler.ViewModelValidation(jsonData, "skill", new SkillViewModelValidator());
@@ -191,7 +191,7 @@ namespace SL.API.Controllers.character
             }
         }
 
-        [HttpDelete("skill/{id}", Name ="DeleteSkill")]
+        [HttpDelete("skill/{id}", Name = "DeleteSkill")]
         public IActionResult DeleteSkill(int id)
         {
             try
@@ -206,6 +206,138 @@ namespace SL.API.Controllers.character
             _responseFormatter.SetMessage("Skill borrado");
             return new OkObjectResult(_responseFormatter.GetResponse());
         }
+        #endregion
+
+        #region Feat
+
+        [HttpGet("feat", Name = "GetFeats")]
+        public IActionResult GetFeats()
+        {
+            var viewModelList = new List<FeatViewModel>();
+            try
+            {
+                viewModelList = _miscellaneousLogicHandler.GetFeats();
+                _responseFormatter.Add("feats", viewModelList);
+                return new OkObjectResult(_responseFormatter.GetResponse());
+            }
+            catch (Exception ex)
+            {
+                _responseFormatter.SetError(ex.Message);
+                return new BadRequestObjectResult(_responseFormatter.GetResponse());
+            }
+        }
+
+        [HttpGet("feat/{id}", Name = "GetFeatById")]
+        public IActionResult GetFeatById(int id)
+        {
+            var viewModel = new FeatViewModel();
+            try
+            {
+                viewModel = _miscellaneousLogicHandler.GetFeatById(id);
+                _responseFormatter.Add("feat", viewModel);
+                return new OkObjectResult(_responseFormatter.GetResponse());
+            }
+            catch (Exception ex)
+            {
+                _responseFormatter.SetError(ex.Message);
+                return new BadRequestObjectResult(_responseFormatter.GetResponse());
+            }
+        }
+
+        #endregion
+
+        #region Feature
+
+        [HttpGet("feature", Name = "GetFeatures")]
+        public IActionResult GetFeatures()
+        {
+            var viewModel = new List<FeatureViewModel>();
+            try
+            {
+                viewModel = _miscellaneousLogicHandler.GetFeatures();
+                _responseFormatter.Add("features", viewModel);
+                return new OkObjectResult(_responseFormatter.GetResponse());
+            }
+            catch (Exception ex)
+            {
+                _responseFormatter.SetError(ex.Message);
+                return new BadRequestObjectResult(_responseFormatter.GetResponse());
+            }
+        }
+
+        [HttpGet("feature/{id}", Name = "GetFeatureById")]
+        public IActionResult GetFeatureById(int id)
+        {
+            var viewModel = new FeatureViewModel();
+            try
+            {
+                viewModel = _miscellaneousLogicHandler.GetFeaturesById(id);
+                _responseFormatter.Add("feature", viewModel);
+                return new OkObjectResult(_responseFormatter.GetResponse());
+            }
+            catch (Exception ex)
+            {
+                _responseFormatter.SetError(ex.Message);
+                return new BadRequestObjectResult(_responseFormatter.GetResponse());
+            }
+        }
+
+        [HttpPost("feature", Name = "CreateFeature")]
+        public IActionResult CreateFeature([FromBody] JObject jsonData)
+        {
+            var validation = _requestHandler.ViewModelValidation(jsonData, "feature", new FeatureViewModelValidator());
+            if (validation.Result != null)
+                return validation.Result;
+            var viewModel = validation.ViewModel;
+            try
+            {
+                viewModel = _miscellaneousLogicHandler.CreateFeature(viewModel);
+                _responseFormatter.Add("feature", viewModel);
+                return new OkObjectResult(_responseFormatter.GetResponse());
+            }
+            catch (Exception ex)
+            {
+                _responseFormatter.SetError(ex.Message);
+                return new BadRequestObjectResult(_responseFormatter.GetResponse());
+            }
+        }
+
+        [HttpPut("feature", Name = "UpdateFeature")]
+        public IActionResult UpdateFeature([FromBody] JObject jsonData)
+        {
+            var validation = _requestHandler.ViewModelValidation(jsonData, "feature", new FeatureViewModelValidator());
+            if (validation.Result != null)
+                return validation.Result;
+            var viewModel = validation.ViewModel;
+            try
+            {
+                viewModel = _miscellaneousLogicHandler.UpdateFeature(viewModel);
+                _responseFormatter.Add("feature", viewModel);
+                return new OkObjectResult(_responseFormatter.GetResponse());
+            }
+            catch (Exception ex)
+            {
+                _responseFormatter.SetError(ex.Message);
+                return new BadRequestObjectResult(_responseFormatter.GetResponse());
+            }
+        }
+
+        [HttpDelete("feature/{id}", Name = "DeleteFeature")]
+        public IActionResult DeleteFeature(int id)
+        {
+            try
+            {
+                _miscellaneousLogicHandler.DeleteFeature(id);
+                _responseFormatter.SetMessage("Feature borrada");
+                return new OkObjectResult(_responseFormatter.GetResponse());
+            }
+            catch (Exception ex)
+            {
+                _responseFormatter.SetError(ex.Message);
+                return new BadRequestObjectResult(_responseFormatter.GetResponse());
+            }
+        }
+
         #endregion
     }
 }

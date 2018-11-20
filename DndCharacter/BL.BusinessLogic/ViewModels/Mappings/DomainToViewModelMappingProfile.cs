@@ -53,13 +53,15 @@ namespace BL.BusinessLogic.ViewModels.Mappings
                 .ForMember(vm=> vm.ValueTypeEquipment, m=> m.MapFrom(e=> e.TypeEquipment.Value));
             CreateMap<EquipmentViewModel, Equipment>();
 
-            CreateMap<Feat, FeatViewModel>();
+            CreateMap<Feat, FeatViewModel>()
+                .ForMember(vm=> vm.NameRace, m=> m.MapFrom(e=> e.Race.Name))
+                .ForMember(vm=> vm.FeatFeatures, m=> m.MapFrom(e=> e.FeatFeatures));
             CreateMap<FeatViewModel, Feat>();
 
-            CreateMap<FeatFeature, FeatFeatureViewModel>()
-                .ForMember(vm=> vm.IdFeat, m=> m.MapFrom(e=> e.Feat.Name))
-                .ForMember(vm=> vm.IdCTypeFeat, m=> m.MapFrom(e=> e.TypeFeat.Value));
-            CreateMap<FeatFeatureViewModel, FeatFeature>();
+            CreateMap<Feature, FeatureViewModel>()
+                .ForMember(vm=> vm.NameFeat, m=> m.MapFrom(e=> e.Feat.Name))
+                .ForMember(vm=> vm.ValueTypeFeat, m=> m.MapFrom(e=> e.TypeFeat.Value));
+            CreateMap<FeatureViewModel, Feature>();
 
             CreateMap<Skill, SkillViewModel>()
                 .ForMember(vm=> vm.ValueAbilityScore, m=> m.MapFrom(e=> e.AbilityScoreSkill.Value));

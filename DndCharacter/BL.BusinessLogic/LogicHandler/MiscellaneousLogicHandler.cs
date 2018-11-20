@@ -126,5 +126,84 @@ namespace BL.BusinessLogic.LogicHandler
             _dndRepository.Commit();
         }
         #endregion
+
+        #region Feat
+        public List<FeatViewModel> GetFeats()
+        {
+            var feats = _dndRepository.GetAll<Feat>().ToList();
+            return Mapper.Map<List<Feat>, List<FeatViewModel>>(feats);
+        }
+
+        public FeatViewModel GetFeatById(int id)
+        {
+            var feat = _dndRepository.GetSingle<Feat>(a => a.Id == id, false, a => a.Race, a => a.FeatFeatures);
+            return Mapper.Map<Feat, FeatViewModel>(feat);
+        }
+
+        #endregion
+
+        #region FeatFeature
+
+        public List<FeatureViewModel> GetFeatures()
+        {
+            var features = _dndRepository.GetAll<Feature>().ToList();
+            return Mapper.Map<List<Feature>, List<FeatureViewModel>>(features);
+        }
+
+        public FeatureViewModel GetFeaturesById(int id)
+        {
+            var feature = _dndRepository.GetSingle<Feature>(a => a.Id == id, false, a=> a.TypeFeat);
+            if (feature == null)
+                throw new Exception(string.Format(Resources.ValidationMessages.EntityM_Error_NotFound, nameof(Feature)));
+            return Mapper.Map<Feature, FeatureViewModel>(feature);
+        }
+
+        public FeatureViewModel CreateFeature(FeatureViewModel viewModel)
+        {
+            var feat = _dndRepository.GetSingle<Feature>(a => a.Id == viewModel.Id, false);
+            if (feat != null)
+                throw new Exception(string.Format(Resources.ValidationMessages.EntityM_Error_AlredyExist, nameof(Feature)));
+            feat = Mapper.Map<FeatureViewModel, Feature>(viewModel);
+            _dndRepository.Add(feat);
+            _dndRepository.Commit();
+            feat = _dndRepository.GetSingle<Feature>(a => a.Id == feat.Id, false);
+            return Mapper.Map<Feature, FeatureViewModel>(feat);
+        }
+
+        public FeatureViewModel UpdateFeature(FeatureViewModel viewModel)
+        {
+            var feature = _dndRepository.GetSingle<Feature>(a => a.Id == viewModel.Id, false);
+            if (feature == null)
+                throw new Exception(string.Format(Resources.ValidationMessages.EntityM_Error_NotFound, nameof(Feature)));
+            feature.IdFeat = viewModel.IdFeat;
+            feature.Description = viewModel.Description;
+            feature.IdCTypeFeat = viewModel.IdCTypeFeat;
+            feature.AddedAmount = viewModel.AddedAmount;
+            feature.AddedDescription = viewModel.AddedDescription;
+            _dndRepository.Update(feature);
+            _dndRepository.Commit();
+            feature = _dndRepository.GetSingle<Feature>(a => a.Id == viewModel.Id, false);
+            return Mapper.Map<Feature, FeatureViewModel>(feature);
+        }
+
+        public void DeleteFeature(int id)
+        {
+            var feature = _dndRepository.GetSingle<Feature>(a => a.Id == id, false);
+            if (feature == null)
+                throw new Exception(string.Format(Resources.ValidationMessages.EntityM_Error_NotFound, nameof(Feature)));
+            _dndRepository.Delete(feature);
+            _dndRepository.Commit();
+        }
+        #endregion
+
+        #region Collection
+        public List<DataCollectionViewModel> GetDataCollectionByIdCollection(int idCollection)
+        {
+            var dataCollection = _dndRepository.GetAllWhere(new List<System.Linq.Expressions.Expression<Func<DataCollection, bool>>>() { a => a.IdCollection == idCollection }).ToList();
+            if (dataCollection == null)
+                throw new Exception(string.Format(Resources.ValidationMessages.EntityM_Error_NotFound, nameof(DataCollection)));
+            return Mapper.Map<List<DataCollection>, List<DataCollectionViewModel>>(dataCollection);
+        }
+        #endregion
     }
 }
