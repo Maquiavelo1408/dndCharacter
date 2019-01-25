@@ -232,19 +232,35 @@ namespace BL.BusinessLogic.LogicHandler
             if (character == null)
                 throw new Exception(string.Format(Resources.ValidationMessages.EntityM_Error_NotFound, nameof(Character)));
             _dndRepository.DeleteWhere<CharacterSpell>(a => a.IdCharacter == idCharacter);
-            _dndRepository.AddRange(spells.Cantrips);
-            _dndRepository.AddRange(spells.SpellsLevel1);
-            _dndRepository.AddRange(spells.SpellsLevel2);
-            _dndRepository.AddRange(spells.SpellsLevel3);
-            _dndRepository.AddRange(spells.SpellsLevel4);
-            _dndRepository.AddRange(spells.SpellsLevel5);
-            _dndRepository.AddRange(spells.SpellsLevel6);
-            _dndRepository.AddRange(spells.SpellsLevel7);
-            _dndRepository.AddRange(spells.SpellsLevel8);
-            _dndRepository.AddRange(spells.SpellsLevel9);
+            _dndRepository.AddRange(AddSCharacterSpells(idCharacter, spells.Cantrips.ToList()));
+            _dndRepository.AddRange(AddSCharacterSpells(idCharacter, spells.SpellsLevel1.ToList()));
+            _dndRepository.AddRange(AddSCharacterSpells(idCharacter, spells.SpellsLevel2.ToList()));
+            _dndRepository.AddRange(AddSCharacterSpells(idCharacter, spells.SpellsLevel3.ToList()));
+            _dndRepository.AddRange(AddSCharacterSpells(idCharacter, spells.SpellsLevel4.ToList()));
+            _dndRepository.AddRange(AddSCharacterSpells(idCharacter, spells.SpellsLevel5.ToList()));
+            _dndRepository.AddRange(AddSCharacterSpells(idCharacter, spells.SpellsLevel6.ToList()));
+            _dndRepository.AddRange(AddSCharacterSpells(idCharacter, spells.SpellsLevel7.ToList()));
+            _dndRepository.AddRange(AddSCharacterSpells(idCharacter, spells.SpellsLevel8.ToList()));
+            _dndRepository.AddRange(AddSCharacterSpells(idCharacter, spells.SpellsLevel9.ToList()));
+
+
             _dndRepository.Commit();
 
             return GetCharacterSpell(idCharacter);
+        }
+
+        public List<CharacterSpell> AddSCharacterSpells(int idCharacter, List<SpellViewModel> spells)
+        {
+            var characterSpells = new List<CharacterSpell>();
+            foreach(var spell in spells)
+            {
+                characterSpells.Add(new CharacterSpell()
+                {
+                    IdCharacter = idCharacter,
+                    IdSpell = spell.Id
+                });
+            }
+            return characterSpells;
         }
 
         #endregion
