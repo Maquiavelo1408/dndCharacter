@@ -265,5 +265,54 @@ namespace BL.BusinessLogic.LogicHandler
 
         #endregion
 
+
+        #region CharacterFeats
+
+        public void GetCharactersFeats(int idCharacter)
+        {
+            var character = _dndRepository.GetSingle<Character>(a => a.Id == idCharacter);
+            if (character == null)
+                throw new Exception(string.Format(Resources.ValidationMessages.EntityM_Error_NotFound, nameof(Character)));
+            var characterFeats = _dndRepository.GetAllWhere<CharacterFeat>(new List<System.Linq.Expressions.Expression<Func<CharacterFeat, bool>>>()
+            {
+                a=> a.IdCharacter == idCharacter
+            }, null, false, a=>a.Feat, a=>a.Feat.FeatFeatures);
+            foreach(var feat in characterFeats)
+            {
+                foreach(var feature in feat.Feat.FeatFeatures)
+                {
+                    switch (feature.IdCTypeFeat)
+                    {
+                        case (int)Constants.FeatType.IncreaseAbiScore:
+                            break;
+                        case (int)Constants.FeatType.AdvantageSkill:
+                            break;
+                        case (int)Constants.FeatType.IncreaseInitiative:
+                            break;
+                        case (int)Constants.FeatType.AdvantageSavingThrow:
+                            break;
+                        case (int)Constants.FeatType.IncreaseSpell:
+                            break;
+                        case (int)Constants.FeatType.IncreaseLanguages:
+                            break;
+                        case (int)Constants.FeatType.IncreaseSpeed:
+                            break;
+                        case (int)Constants.FeatType.ProficiencySavingThrow:
+                            break;
+                        case (int)Constants.FeatType.ProficiencySkill:
+                            break;
+                        case (int)Constants.FeatType.ProficiencyTool:
+                            break;
+                        case (int)Constants.FeatType.IncreaseHitPoints:
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
+
+        }
+
+        #endregion
     }
 }
