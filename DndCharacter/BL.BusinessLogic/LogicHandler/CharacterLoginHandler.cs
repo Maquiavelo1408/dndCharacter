@@ -171,5 +171,61 @@ namespace BL.BusinessLogic.LogicHandler
 
         #endregion
 
+        #region CharacterSpells
+
+        public SpellKnowViewModel GetCharacterSpell(int idCharacter)
+        {
+            var character = _dndRepository.GetSingle<Character>(a => a.Id == idCharacter, false, a=> a.CharacterSpells);
+            if (character == null)
+                throw new Exception(string.Format(Resources.ValidationMessages.EntityM_Error_NotFound, nameof(Character)));
+
+            var spells = _dndRepository.GetAllWhere(new List<System.Linq.Expressions.Expression<Func<Spell, bool>>>()
+            {
+                a=> character.CharacterSpells.Where(s=>s.IdSpell == a.Id).First() != null
+            }).ToList();
+            var characterSpells = new SpellKnowViewModel();
+            foreach(var spell in spells)
+            {
+                var spellVM = Mapper.Map<Spell, SpellViewModel>(spell);
+                switch (spell.Level)
+                {
+                    case 1:
+                        characterSpells.SpellsLevel1.Add(spellVM);
+                        break;
+                    case 2:
+                        characterSpells.SpellsLevel2.Add(spellVM);
+                        break;
+                    case 3:
+                        characterSpells.SpellsLevel3.Add(spellVM);
+                        break;
+                    case 4:
+                        characterSpells.SpellsLevel4.Add(spellVM);
+                        break;
+                    case 5:
+                        characterSpells.SpellsLevel5.Add(spellVM);
+                        break;
+                    case 6:
+                        characterSpells.SpellsLevel6.Add(spellVM);
+                        break;
+                    case 7:
+                        characterSpells.SpellsLevel7.Add(spellVM);
+                        break;
+                    case 8:
+                        characterSpells.SpellsLevel8.Add(spellVM);
+                        break;
+                    case 9:
+                        characterSpells.SpellsLevel9.Add(spellVM);
+                        break;
+                    case 0:
+                    default:
+                        characterSpells.Cantrips.Add(spellVM);
+                        break;
+                }
+            }
+            return characterSpells;
+        }
+
+        #endregion
+
     }
 }

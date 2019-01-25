@@ -205,5 +205,61 @@ namespace BL.BusinessLogic.LogicHandler
             return Mapper.Map<List<DataCollection>, List<DataCollectionViewModel>>(dataCollection);
         }
         #endregion
+
+        #region Spells
+
+        public List<SpellViewModel> GetSpells()
+        {
+            var spells = _dndRepository.GetAll<Spell>().ToList();
+            return Mapper.Map<List<Spell>, List<SpellViewModel>>(spells);
+        }
+
+        public SpellViewModel GetSpellById(int id)
+        {
+            var spell = _dndRepository.GetSingle<Spell>(a => a.Id == id);
+            return Mapper.Map<Spell, SpellViewModel>(spell);
+        }
+
+        public SpellViewModel CreateSpell(SpellViewModel viewModel)
+        {
+            var entity = Mapper.Map<SpellViewModel, Spell>(viewModel);
+            _dndRepository.Add(entity);
+            _dndRepository.Commit();
+
+            return GetSpellById(entity.Id);
+        }
+
+        public SpellViewModel UpdateSpell(SpellViewModel viewModel)
+        {
+            var entity = _dndRepository.GetSingle<Spell>(a => a.Id == viewModel.Id);
+            if (entity == null)
+                throw new Exception(string.Format(Resources.ValidationMessages.EntityM_Error_NotFound, nameof(Spell)));
+            entity.Name = viewModel.Name;
+            entity.Description = viewModel.Description;
+
+            _dndRepository.Update(entity);
+            _dndRepository.Commit();
+
+            return GetSpellById(viewModel.Id);
+        }
+
+        public void DeleteSpell(int id)
+        {
+            var entity = _dndRepository.GetSingle<Spell>(a => a.Id == id);
+            if (entity == null)
+                throw new Exception(string.Format(Resources.ValidationMessages.EntityM_Error_NotFound, nameof(Spell)));
+
+            try
+            {
+                _dndRepository.Delete(entity);
+                _dndRepository.Commit();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(string.Format(Resources.ValidationMessages.EntityM_Terminate, nameof(Spell)));
+            }
+        }
+
+        #endregion
     }
 }

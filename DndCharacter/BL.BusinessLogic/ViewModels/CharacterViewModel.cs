@@ -14,6 +14,7 @@ namespace BL.BusinessLogic.ViewModel
             CharacterFeats = new HashSet<CharacterFeatViewModel>();
             CharacterSkills = new HashSet<CharacterSkillViewModel>();
             CharacterSpells = new HashSet<CharacterSpellViewModel>();
+            KnownSpell = new SpellKnowViewModel();
         }
         public int Id { get; set; }
         public string Name { get; set; }
@@ -33,6 +34,7 @@ namespace BL.BusinessLogic.ViewModel
         public int SilverCoins { get; set; }
         public int ElectrumCoins { get; set; }
         public int GoldCoins { get; set; }
+        public SpellKnowViewModel KnownSpell { get; set; }
         public ICollection<CharacterEquipmentViewModel> CharacterEquipments { get; set; }
         public ICollection<CharacterFeatViewModel> CharacterFeats { get; set; }
         public ICollection<CharacterSkillViewModel> CharacterSkills { get; set; }
