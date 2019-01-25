@@ -225,6 +225,28 @@ namespace BL.BusinessLogic.LogicHandler
             return characterSpells;
         }
 
+
+        public SpellKnowViewModel SetSpellsKnown(int idCharacter, SpellKnowViewModel spells)
+        {
+            var character = _dndRepository.GetSingle<Character>(a => a.Id == idCharacter);
+            if (character == null)
+                throw new Exception(string.Format(Resources.ValidationMessages.EntityM_Error_NotFound, nameof(Character)));
+            _dndRepository.DeleteWhere<CharacterSpell>(a => a.IdCharacter == idCharacter);
+            _dndRepository.AddRange(spells.Cantrips);
+            _dndRepository.AddRange(spells.SpellsLevel1);
+            _dndRepository.AddRange(spells.SpellsLevel2);
+            _dndRepository.AddRange(spells.SpellsLevel3);
+            _dndRepository.AddRange(spells.SpellsLevel4);
+            _dndRepository.AddRange(spells.SpellsLevel5);
+            _dndRepository.AddRange(spells.SpellsLevel6);
+            _dndRepository.AddRange(spells.SpellsLevel7);
+            _dndRepository.AddRange(spells.SpellsLevel8);
+            _dndRepository.AddRange(spells.SpellsLevel9);
+            _dndRepository.Commit();
+
+            return GetCharacterSpell(idCharacter);
+        }
+
         #endregion
 
     }
