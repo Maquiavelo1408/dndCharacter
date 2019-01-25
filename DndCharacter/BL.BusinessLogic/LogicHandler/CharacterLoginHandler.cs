@@ -146,7 +146,7 @@ namespace BL.BusinessLogic.LogicHandler
             if (character == null)
                 throw new Exception(string.Format(Resources.ValidationMessages.EntityM_Error_NotFound, nameof(Character)));
 
-            var skills = _dndRepository.GetAllWhere<CharacterSkill>(new List<System.Linq.Expressions.Expression<Func<CharacterSkill, bool>>>()
+            var skills = _dndRepository.GetAllWhere(new List<System.Linq.Expressions.Expression<Func<CharacterSkill, bool>>>()
             {
                 a=>a.IdCharacter == idCharacter
             }).ToList();
@@ -163,25 +163,10 @@ namespace BL.BusinessLogic.LogicHandler
             {
                 throw new Exception(string.Format(Resources.ValidationMessages.EntityM_Error_NotFound, nameof(Character)));
             }
-            var characterSkills = GetSkillsByCharacter(idCharacter);
-
-            foreach(var skill in skills)
-            {
-                var entity = characterSkills.Where(a => a.IdSkill == skill.IdSkill).First();
-                if (entity == null)
-                {
-                    _dndRepository.Add<CharacterSkill>(Mapper.Map<CharacterSkillViewModel, CharacterSkill>(skill));
-                }
-                else
-                {
-                    entity.Value = skill.Value;
-                    entity.Proficient = skill.Proficient;
-                    _dndRepository.Update(Mapper.Map<CharacterSkillViewModel, CharacterSkill>(entity));
-                }
-            }
-
+            _dndRepository.DeleteWhere<CharacterSkill>(a => a.IdCharacter == idCharacter);
+            var viewModel = Mapper.Map<List<CharacterSkillViewModel>, List< CharacterSkill>>(skills);
+            _dndRepository.AddRange(viewModel);
             _dndRepository.Commit();
-
         }
 
         #endregion
