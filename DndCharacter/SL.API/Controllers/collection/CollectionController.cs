@@ -40,5 +40,26 @@ namespace SL.API.Controllers.character
                 return new BadRequestObjectResult(_responseFormatter.GetResponse());
             }
         }
+
+        [HttpPost("datacollection/{idCollection}", Name = "SetDataCollection")]
+        public IActionResult SetDataCollection([FromBody] JObject jsonData, int idCollection)
+        {
+            var validator = _requestHandler.ArrayViewModelValidator(jsonData, "dataCollection", new DataCollectionViewModelValidator());
+            if (validator.Result != null)
+                return validator.Result;
+            var viewModel = validator.ViewModelList;
+
+            try
+            {
+                var collection = _miscellaneousLogicHandler.SetDataCollectionToCollection(idCollection, viewModel);
+                _responseFormatter.Add("collection", collection);
+                return new OkObjectResult(_responseFormatter.GetResponse());
+            }
+            catch (Exception ex)
+            {
+                _responseFormatter.SetError(ex.Message);
+                return new BadRequestObjectResult(_responseFormatter.GetResponse());
+            }
+        }
     }
 }
