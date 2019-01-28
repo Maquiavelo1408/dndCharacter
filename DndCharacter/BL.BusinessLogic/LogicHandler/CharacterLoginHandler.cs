@@ -27,9 +27,10 @@ namespace BL.BusinessLogic.LogicHandler
 
         public CharacterViewModel GetCharacterById(int id)
         {
-            var entity = _dndRepository.GetSingle<Character>(a => a.Id == id, false, a=> a.Aligment);
-
-            return Mapper.Map<Character, CharacterViewModel>(entity);
+            var entity = _dndRepository.GetSingle<Character>(a => a.Id == id, false, a=> a.Aligment, a=>a.CharacterSpells);
+            var viewModel = Mapper.Map<Character, CharacterViewModel>(entity);
+            viewModel.SpellsKnown = GetCharacterSpell(entity);
+            return viewModel;
         }
 
         public CharacterViewModel CreateCharacter(CharacterViewModel viewModel)
@@ -172,7 +173,11 @@ namespace BL.BusinessLogic.LogicHandler
         #endregion
 
         #region CharacterSpells
-
+        /// <summary>
+        /// Get the spells of a character by given id
+        /// </summary>
+        /// <param name="idCharacter"></param>
+        /// <returns>SpellKnowViewModel</returns>
         public SpellKnowViewModel GetCharacterSpell(int idCharacter)
         {
             var character = _dndRepository.GetSingle<Character>(a => a.Id == idCharacter, false, a=> a.CharacterSpells);
@@ -224,8 +229,64 @@ namespace BL.BusinessLogic.LogicHandler
             }
             return characterSpells;
         }
-
-
+        /// <summary>
+        /// Get the spells of a character by given entity
+        /// </summary>
+        /// <param name="character"></param>
+        /// <returns>SpellKnowViewModel</returns>
+        public SpellKnowViewModel GetCharacterSpell(Character character)
+        {
+            var spells = _dndRepository.GetAllWhere(new List<System.Linq.Expressions.Expression<Func<Spell, bool>>>()
+            {
+                a=> character.CharacterSpells.Where(s=>s.IdSpell == a.Id).First() != null
+            }).ToList();
+            var characterSpells = new SpellKnowViewModel();
+            foreach (var spell in spells)
+            {
+                var spellVM = Mapper.Map<Spell, SpellViewModel>(spell);
+                switch (spell.Level)
+                {
+                    case 1:
+                        characterSpells.SpellsLevel1.Add(spellVM);
+                        break;
+                    case 2:
+                        characterSpells.SpellsLevel2.Add(spellVM);
+                        break;
+                    case 3:
+                        characterSpells.SpellsLevel3.Add(spellVM);
+                        break;
+                    case 4:
+                        characterSpells.SpellsLevel4.Add(spellVM);
+                        break;
+                    case 5:
+                        characterSpells.SpellsLevel5.Add(spellVM);
+                        break;
+                    case 6:
+                        characterSpells.SpellsLevel6.Add(spellVM);
+                        break;
+                    case 7:
+                        characterSpells.SpellsLevel7.Add(spellVM);
+                        break;
+                    case 8:
+                        characterSpells.SpellsLevel8.Add(spellVM);
+                        break;
+                    case 9:
+                        characterSpells.SpellsLevel9.Add(spellVM);
+                        break;
+                    case 0:
+                    default:
+                        characterSpells.Cantrips.Add(spellVM);
+                        break;
+                }
+            }
+            return characterSpells;
+        }
+        /// <summary>
+        /// Set the spells of a character
+        /// </summary>
+        /// <param name="idCharacter"></param>
+        /// <param name="spells"></param>
+        /// <returns>SpellKnowViewModel</returns>
         public SpellKnowViewModel SetSpellsKnown(int idCharacter, SpellKnowViewModel spells)
         {
             var character = _dndRepository.GetSingle<Character>(a => a.Id == idCharacter);
@@ -248,7 +309,12 @@ namespace BL.BusinessLogic.LogicHandler
 
             return GetCharacterSpell(idCharacter);
         }
-
+        /// <summary>
+        /// Auxiliar method to set spells in database. Create a list of CharacterSpells by given IdCharacter and List of SpellViewModel
+        /// </summary>
+        /// <param name="idCharacter"></param>
+        /// <param name="spells"></param>
+        /// <returns>List CharacterSpell</returns>
         public List<CharacterSpell> AddSCharacterSpells(int idCharacter, List<SpellViewModel> spells)
         {
             var characterSpells = new List<CharacterSpell>();
@@ -273,7 +339,7 @@ namespace BL.BusinessLogic.LogicHandler
             var character = _dndRepository.GetSingle<Character>(a => a.Id == idCharacter);
             if (character == null)
                 throw new Exception(string.Format(Resources.ValidationMessages.EntityM_Error_NotFound, nameof(Character)));
-            var characterFeats = _dndRepository.GetAllWhere<CharacterFeat>(new List<System.Linq.Expressions.Expression<Func<CharacterFeat, bool>>>()
+            var characterFeats = _dndRepository.GetAllWhere(new List<System.Linq.Expressions.Expression<Func<CharacterFeat, bool>>>()
             {
                 a=> a.IdCharacter == idCharacter
             }, null, false, a=>a.Feat, a=>a.Feat.FeatFeatures);

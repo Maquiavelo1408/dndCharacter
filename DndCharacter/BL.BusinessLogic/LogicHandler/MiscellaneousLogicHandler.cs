@@ -197,12 +197,91 @@ namespace BL.BusinessLogic.LogicHandler
         #endregion
 
         #region Collection
+        public List<CollectionViewModel> GetCollections()
+        {
+            var collections = _dndRepository.GetAll<Collection>().ToList();
+            return Mapper.Map<List<Collection>, List<CollectionViewModel>>(collections);
+        }
+
+        public CollectionViewModel GetCollectionById(int idCollection)
+        {
+            var collection = _dndRepository.GetSingle<Collection>(a => a.Id == idCollection, false, a=>a.DataCollections);
+            return Mapper.Map<Collection, CollectionViewModel>(collection);
+        }
+
+        public CollectionViewModel CreateCollection(CollectionViewModel viewModel)
+        {
+            var entity = Mapper.Map<CollectionViewModel, Collection>(viewModel);
+            _dndRepository.Add(entity);
+            _dndRepository.Commit();
+            viewModel = Mapper.Map<Collection, CollectionViewModel>(_dndRepository.GetSingle<Collection>(a => a.Id == entity.Id));
+            return viewModel;
+        }
+
+        public CollectionViewModel UpdateCollection(CollectionViewModel viewModel)
+        {
+            var entity = _dndRepository.GetSingle<Collection>(a => a.Id == viewModel.Id);
+            if (entity == null)
+                throw new Exception(string.Format(Resources.ValidationMessages.EntityF_Error_NotFound, nameof(Collection)));
+            entity.Name = viewModel.Name;
+            _dndRepository.Update(entity);
+            _dndRepository.Commit();
+
+            viewModel = Mapper.Map<Collection, CollectionViewModel>(_dndRepository.GetSingle<Collection>(a => a.Id == viewModel.Id));
+            return viewModel;
+        }
+
+        public void DeleteCollection(int idCollection)
+        {
+            var entity = _dndRepository.GetSingle<Collection>(a => a.Id == idCollection);
+            if (entity == null)
+                throw new Exception(string.Format(Resources.ValidationMessages.EntityF_Error_NotFound, nameof(Collection)));
+
+            try
+            {
+                _dndRepository.Delete(entity);
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(string.Format(Resources.ValidationMessages.EntityF_Error_Terminate, nameof(Collection)));
+            }
+
+        }
+        #endregion
+
+        #region DataCollecton
         public List<DataCollectionViewModel> GetDataCollectionByIdCollection(int idCollection)
         {
             var dataCollection = _dndRepository.GetAllWhere(new List<System.Linq.Expressions.Expression<Func<DataCollection, bool>>>() { a => a.IdCollection == idCollection }).ToList();
             if (dataCollection == null)
                 throw new Exception(string.Format(Resources.ValidationMessages.EntityM_Error_NotFound, nameof(DataCollection)));
             return Mapper.Map<List<DataCollection>, List<DataCollectionViewModel>>(dataCollection);
+        }
+        /// <summary>
+        /// Update DataCollections in a collection
+        /// </summary>
+        /// <param name="idCollection"></param>
+        /// <param name="dataCollections"></param>
+        /// <returns>CollectionViewModel</returns>
+        public CollectionViewModel SetDataCollectionToCollection(int idCollection, List<DataCollectionViewModel> dataCollections)
+        {
+            var collection = _dndRepository.GetSingle<Collection>(a => a.Id == idCollection, false, a => a.DataCollections);
+            if (collection == null)
+                throw new Exception(string.Format(Resources.ValidationMessages.EntityF_Error_NotFound, nameof(Collection)));
+            collection.DataCollections.Clear();
+            foreach(var data in dataCollections)
+            {
+                collection.DataCollections.Add(new DataCollection()
+                {
+                    Value = data.Value,
+                    IdCollection = idCollection
+                });
+            }
+            _dndRepository.Update(collection);
+            _dndRepository.Commit();
+            var viewModel = Mapper.Map<Collection, CollectionViewModel>(_dndRepository.GetSingle<Collection>(a => a.Id == idCollection, false, a => a.DataCollections));
+            return viewModel;
         }
         #endregion
 

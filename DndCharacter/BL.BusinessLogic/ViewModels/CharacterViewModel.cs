@@ -39,5 +39,6 @@ namespace BL.BusinessLogic.ViewModel
         public ICollection<CharacterFeatViewModel> CharacterFeats { get; set; }
         public ICollection<CharacterSkillViewModel> CharacterSkills { get; set; }
         public ICollection<CharacterSpellViewModel> CharacterSpells { get; set; }
+        public SpellKnowViewModel SpellsKnown { get; set; }
     }
 }
