@@ -197,18 +197,30 @@ namespace BL.BusinessLogic.LogicHandler
         #endregion
 
         #region Collection
+        /// <summary>
+        /// Get the list of collections
+        /// </summary>
+        /// <returns></returns>
         public List<CollectionViewModel> GetCollections()
         {
             var collections = _dndRepository.GetAll<Collection>().ToList();
             return Mapper.Map<List<Collection>, List<CollectionViewModel>>(collections);
         }
-
+        /// <summary>
+        /// Get a specific collection by given id
+        /// </summary>
+        /// <param name="idCollection"></param>
+        /// <returns></returns>
         public CollectionViewModel GetCollectionById(int idCollection)
         {
             var collection = _dndRepository.GetSingle<Collection>(a => a.Id == idCollection, false, a=>a.DataCollections);
             return Mapper.Map<Collection, CollectionViewModel>(collection);
         }
-
+        /// <summary>
+        /// Create a new collection by given CollectionVieWModel
+        /// </summary>
+        /// <param name="viewModel"></param>
+        /// <returns></returns>
         public CollectionViewModel CreateCollection(CollectionViewModel viewModel)
         {
             var entity = Mapper.Map<CollectionViewModel, Collection>(viewModel);
@@ -217,7 +229,11 @@ namespace BL.BusinessLogic.LogicHandler
             viewModel = Mapper.Map<Collection, CollectionViewModel>(_dndRepository.GetSingle<Collection>(a => a.Id == entity.Id));
             return viewModel;
         }
-
+        /// <summary>
+        /// Update a collection by given CollectionViewModel
+        /// </summary>
+        /// <param name="viewModel"></param>
+        /// <returns></returns>
         public CollectionViewModel UpdateCollection(CollectionViewModel viewModel)
         {
             var entity = _dndRepository.GetSingle<Collection>(a => a.Id == viewModel.Id);
@@ -230,7 +246,10 @@ namespace BL.BusinessLogic.LogicHandler
             viewModel = Mapper.Map<Collection, CollectionViewModel>(_dndRepository.GetSingle<Collection>(a => a.Id == viewModel.Id));
             return viewModel;
         }
-
+        /// <summary>
+        /// Delete a collection by given id
+        /// </summary>
+        /// <param name="idCollection"></param>
         public void DeleteCollection(int idCollection)
         {
             var entity = _dndRepository.GetSingle<Collection>(a => a.Id == idCollection);
@@ -250,7 +269,12 @@ namespace BL.BusinessLogic.LogicHandler
         }
         #endregion
 
-        #region DataCollecton
+        #region DataCollection 
+        /// <summary>
+        /// Get the datacollection of a collecion
+        /// </summary>
+        /// <param name="idCollection"></param>
+        /// <returns>List of DataCollectionViewModel</returns>
         public List<DataCollectionViewModel> GetDataCollectionByIdCollection(int idCollection)
         {
             var dataCollection = _dndRepository.GetAllWhere(new List<System.Linq.Expressions.Expression<Func<DataCollection, bool>>>() { a => a.IdCollection == idCollection }).ToList();

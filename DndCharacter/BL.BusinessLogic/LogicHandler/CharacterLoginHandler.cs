@@ -27,7 +27,7 @@ namespace BL.BusinessLogic.LogicHandler
 
         public CharacterViewModel GetCharacterById(int id)
         {
-            var entity = _dndRepository.GetSingle<Character>(a => a.Id == id, false, a=> a.Aligment, a=>a.CharacterSpells);
+            var entity = _dndRepository.GetSingle<Character>(a => a.Id == id, false, a=> a.Aligment, a=>a.CharacterSpells, a=> a.CharacterEquipments);
             var viewModel = Mapper.Map<Character, CharacterViewModel>(entity);
             viewModel.SpellsKnown = GetCharacterSpell(entity);
             return viewModel;
@@ -378,6 +378,12 @@ namespace BL.BusinessLogic.LogicHandler
             }
 
         }
+
+        #endregion
+
+        #region CharacterEquipment
+
+        
 
         #endregion
     }
