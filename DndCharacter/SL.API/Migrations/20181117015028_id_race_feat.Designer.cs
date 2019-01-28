@@ -4,14 +4,16 @@ using DAL.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace SL.API.Migrations
 {
     [DbContext(typeof(DndCharacterManagerContext))]
-    partial class DndCharacterManagerContextModelSnapshot : ModelSnapshot
+    [Migration("20181117015028_id_race_feat")]
+    partial class id_race_feat
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -277,7 +279,7 @@ namespace SL.API.Migrations
                     b.ToTable("feat");
                 });
 
-            modelBuilder.Entity("DAL.Model.Entities.Feature", b =>
+            modelBuilder.Entity("DAL.Model.Entities.FeatFeature", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -286,12 +288,6 @@ namespace SL.API.Migrations
 
                     b.Property<int>("AddedAmount")
                         .HasColumnName("added_amount");
-
-                    b.Property<string>("AddedDescription")
-                        .HasColumnName("added_description");
-
-                    b.Property<string>("Description")
-                        .HasColumnName("description");
 
                     b.Property<int>("IdCTypeFeat")
                         .HasColumnName("id_c_type_feat");
@@ -305,7 +301,7 @@ namespace SL.API.Migrations
 
                     b.HasIndex("IdFeat");
 
-                    b.ToTable("feature");
+                    b.ToTable("feat_feature");
                 });
 
             modelBuilder.Entity("DAL.Model.Entities.Race", b =>
@@ -491,7 +487,7 @@ namespace SL.API.Migrations
                         .HasForeignKey("IdRace");
                 });
 
-            modelBuilder.Entity("DAL.Model.Entities.Feature", b =>
+            modelBuilder.Entity("DAL.Model.Entities.FeatFeature", b =>
                 {
                     b.HasOne("DAL.Model.Entities.DataCollection", "TypeFeat")
                         .WithMany("FeatFeatures")

@@ -15,6 +15,7 @@ namespace DAL.Model.Entities
             AbilityScores = new HashSet<AbilityScore>();
             CharacterEquipments = new HashSet<CharacterEquipment>();
             CharacterFeats = new HashSet<CharacterFeat>();
+            CharacterSkills = new HashSet<CharacterSkill>();
         }
 
         [Column("id_character")]
@@ -70,6 +71,9 @@ namespace DAL.Model.Entities
 
         [InverseProperty("CharactersAligment"), ForeignKey("IdCAligment")]
         public virtual DataCollection Aligment { get; set; }
+
+        [InverseProperty("CharacterRace"), ForeignKey("IdRace")]
+        public virtual Race Race { get; set; }
 
         [InverseProperty("Character")]
         public virtual ICollection<CharacterSpell> CharacterSpells { get; set; }

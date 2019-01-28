@@ -4,14 +4,16 @@ using DAL.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace SL.API.Migrations
 {
     [DbContext(typeof(DndCharacterManagerContext))]
-    partial class DndCharacterManagerContextModelSnapshot : ModelSnapshot
+    [Migration("20181117023028_added_columns_feat_feature")]
+    partial class added_columns_feat_feature
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -277,7 +279,7 @@ namespace SL.API.Migrations
                     b.ToTable("feat");
                 });
 
-            modelBuilder.Entity("DAL.Model.Entities.Feature", b =>
+            modelBuilder.Entity("DAL.Model.Entities.FeatFeature", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -305,7 +307,7 @@ namespace SL.API.Migrations
 
                     b.HasIndex("IdFeat");
 
-                    b.ToTable("feature");
+                    b.ToTable("feat_feature");
                 });
 
             modelBuilder.Entity("DAL.Model.Entities.Race", b =>
@@ -491,7 +493,7 @@ namespace SL.API.Migrations
                         .HasForeignKey("IdRace");
                 });
 
-            modelBuilder.Entity("DAL.Model.Entities.Feature", b =>
+            modelBuilder.Entity("DAL.Model.Entities.FeatFeature", b =>
                 {
                     b.HasOne("DAL.Model.Entities.DataCollection", "TypeFeat")
                         .WithMany("FeatFeatures")

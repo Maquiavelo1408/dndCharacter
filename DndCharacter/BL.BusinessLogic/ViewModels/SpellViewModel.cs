@@ -11,6 +11,7 @@ namespace BL.BusinessLogic.ViewModel
         {
             Class = new HashSet<ClassesCollection>();
         }
+        public int Id { get; set; }
         public string Name { get; set; }
         public int Level { get; set; }
         public ICollection<ClassesCollection> Class { get; set; }
