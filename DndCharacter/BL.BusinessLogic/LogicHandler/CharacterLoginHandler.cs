@@ -156,7 +156,7 @@ namespace BL.BusinessLogic.LogicHandler
 
         }
 
-        public void SetSkillsToCharacter(int idCharacter, List<CharacterSkillViewModel> skills)
+        public List<CharacterSkillViewModel> SetSkillsToCharacter(int idCharacter, List<CharacterSkillViewModel> skills)
         {
             var character = GetCharacterById(idCharacter);
 
@@ -165,9 +165,14 @@ namespace BL.BusinessLogic.LogicHandler
                 throw new Exception(string.Format(Resources.ValidationMessages.EntityM_Error_NotFound, nameof(Character)));
             }
             _dndRepository.DeleteWhere<CharacterSkill>(a => a.IdCharacter == idCharacter);
-            var viewModel = Mapper.Map<List<CharacterSkillViewModel>, List< CharacterSkill>>(skills);
-            _dndRepository.AddRange(viewModel);
+            var entity = Mapper.Map<List<CharacterSkillViewModel>, List< CharacterSkill>>(skills);
+            _dndRepository.AddRange(entity);
             _dndRepository.Commit();
+            List<CharacterSkill> entityList = _dndRepository.GetAllWhere(new List<System.Linq.Expressions.Expression<Func<CharacterSkill, bool>>>()
+            {
+                a=>a.IdCharacter == idCharacter
+            }).ToList();
+            return Mapper.Map<List<CharacterSkill>, List<CharacterSkillViewModel>>(entityList);
         }
 
         #endregion
