@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using AutoMapper;
 using BL.BusinessLogic.ViewModel;
@@ -363,6 +364,72 @@ namespace BL.BusinessLogic.LogicHandler
             }
         }
 
+        #endregion
+
+        #region Class
+        public List<ClassViewModel> GetClasses()
+        {
+            var classes = _dndRepository.GetAll<Class>().ToList();
+            return Mapper.Map<List<Class>, List<ClassViewModel>>(classes);
+        }
+
+        public ClassViewModel GetClassById(int id)
+        {
+            var entity = _dndRepository.GetSingle<Class>(a => a.Id == id, false);
+            return Mapper.Map<Class, ClassViewModel>(entity);
+        }
+
+        public ClassViewModel CreateClass(ClassViewModel viewModel)
+        {
+            var classEntity = Mapper.Map<ClassViewModel, Class>(viewModel);
+            if (_dndRepository.GetSingle<Class>(a => a.Id == viewModel.Id) != null)
+                throw new Exception(string.Format(Resources.ValidationMessages.EntityM_Error_AlredyExist, nameof(Class)));
+
+            _dndRepository.Add(classEntity);
+            _dndRepository.Commit();
+            classEntity = _dndRepository.GetSingle<Class>(a => a.Id == classEntity.Id, false);
+            return Mapper.Map<Class, ClassViewModel>(classEntity);
+        }
+
+        public ClassViewModel UpdateClass(ClassViewModel viewModel)
+        {
+            var entity = _dndRepository.GetSingle<Class>(a => a.Id == viewModel.Id);
+            if (entity == null)
+                throw new Exception(string.Format(Resources.ValidationMessages.EntityM_Error_NotFound, nameof(Class)));
+            entity.Name = viewModel.Name;
+            _dndRepository.Update(entity);
+            _dndRepository.Commit();
+            return Mapper.Map<Class, ClassViewModel>(_dndRepository.GetSingle<Class>(a => a.Id == viewModel.Id));
+        }
+
+        public void DeleteClass(int id)
+        {
+            var entity = _dndRepository.GetSingle<Class>(a => a.Id == id);
+            if (entity == null)
+                throw new Exception(string.Format(Resources.ValidationMessages.EntityM_Error_NotFound, nameof(Class)));
+            _dndRepository.Delete(entity);
+            _dndRepository.Commit();
+        }
+
+        public List<SpellViewModel> GetSpellByClass(int idClass, int spellLevel = 0)
+        {
+            var isClass = _dndRepository.GetSingle<Class>(a => a.Id == idClass);
+            if (isClass == null)
+                throw new Exception(string.Format(Resources.ValidationMessages.EntityF_Error_NotFound, nameof(Class)));
+            var whereExpression = new List<Expression<Func<SpellClass, bool>>>()
+            {
+                a=> a.IdClass == idClass
+            };
+            if (spellLevel > 0)
+                whereExpression.Add(a => a.Spell.Level == spellLevel);
+            var spells = _dndRepository.GetAllWhere(whereExpression, null, false, a=> a.Spell);
+            var listSpell = new List<SpellViewModel>();
+            foreach(var spell in spells)
+            {
+                listSpell.Add(Mapper.Map<Spell, SpellViewModel>(spell.Spell));
+            }
+            return listSpell;
+        }
         #endregion
     }
 }
