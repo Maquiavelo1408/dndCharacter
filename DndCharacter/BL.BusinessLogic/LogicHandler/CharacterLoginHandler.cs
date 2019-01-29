@@ -359,7 +359,29 @@ namespace BL.BusinessLogic.LogicHandler
 
         #region CharacterEquipment
 
-        
+
+
+        #endregion
+
+
+        #region Character Stats
+
+        public void GetArmorclass(int idChracter)
+        {
+            var character = _dndRepository.GetSingle<Character>(a => a.Id == idChracter, false, a => a.CharacterEquipments, a => a.CharacterFeats);
+            var armorFeats = _dndRepository.GetAllWhere(new List<System.Linq.Expressions.Expression<Func<Feat, bool>>>()
+            {
+                a=> character.CharacterFeats.Where(x=> a.Id == x.IdFeat).First() != null
+            }, null, false, a=>a.FeatFeatures);
+            var featurePoints = 0;
+            foreach(var feat in armorFeats)
+            {
+                var armorFeatures = feat.FeatFeatures.Where(a => a.IdCTypeFeat == (int)Constants.FeatType.IncreaseArmorClass).ToList();
+                featurePoints += armorFeatures.Sum(a => a.AddedAmount);
+            }
+            
+
+        }
 
         #endregion
     }

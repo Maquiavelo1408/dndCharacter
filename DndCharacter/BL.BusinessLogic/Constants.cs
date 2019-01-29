@@ -47,7 +47,8 @@ namespace BL.BusinessLogic
             ProficiencySavingThrow = 28,
             ProficiencySkill = 29,
             ProficiencyTool = 30,
-            IncreaseHitPoints = 31
+            IncreaseHitPoints = 31,
+            IncreaseArmorClass = 32
         }
     }
 }
