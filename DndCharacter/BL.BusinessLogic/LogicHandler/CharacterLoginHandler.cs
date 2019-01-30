@@ -27,7 +27,7 @@ namespace BL.BusinessLogic.LogicHandler
 
         public CharacterViewModel GetCharacterById(int id)
         {
-            var entity = _dndRepository.GetSingle<Character>(a => a.Id == id, false, a=> a.Aligment, a=>a.CharacterSpells);
+            var entity = _dndRepository.GetSingle<Character>(a => a.Id == id, false, a=> a.Aligment, a=>a.CharacterSpells, a=> a.CharacterEquipments);
             var viewModel = Mapper.Map<Character, CharacterViewModel>(entity);
             viewModel.SpellsKnown = GetCharacterSpell(entity);
             return viewModel;
@@ -93,49 +93,20 @@ namespace BL.BusinessLogic.LogicHandler
         }
         #endregion
 
-        #region Class
-        public List<ClassViewModel> GetClasses()
+        #region Character Class
+        public CharacterViewModel SetClassToCharacter(int idClass, int idCharacter)
         {
-            var classes = _dndRepository.GetAll<Class>().ToList();
-            return Mapper.Map<List<Class>, List<ClassViewModel>>(classes);
-        }
+            var character = _dndRepository.GetSingle<Character>(a => a.Id == idCharacter);
+            var isClass = _dndRepository.GetSingle<Class>(a => a.Id == idClass);
+            if (character == null)
+                throw new Exception(string.Format(Resources.ValidationMessages.EntityM_Error_NotFound, nameof(Character)));
+            if (isClass == null)
+                throw new Exception(string.Format(Resources.ValidationMessages.EntityF_Error_NotFound, nameof(Class)));
 
-        public ClassViewModel GetClassById(int id)
-        {
-            var entity = _dndRepository.GetSingle<Class>(a => a.Id == id, false);
-            return Mapper.Map<Class, ClassViewModel>(entity);
-        }
-
-        public ClassViewModel CreateClass(ClassViewModel viewModel)
-        {
-            var classEntity = Mapper.Map<ClassViewModel, Class>(viewModel);
-            if (_dndRepository.GetSingle<Class>(a => a.Id == viewModel.Id) != null)
-                throw new Exception(string.Format(Resources.ValidationMessages.EntityM_Error_AlredyExist, nameof(Class)));
-
-            _dndRepository.Add(classEntity);
+            character.IdClass = idClass;
+            _dndRepository.Update(character);
             _dndRepository.Commit();
-            classEntity = _dndRepository.GetSingle<Class>(a => a.Id == classEntity.Id, false);
-            return Mapper.Map<Class, ClassViewModel>(classEntity);
-        }
-
-        public ClassViewModel UpdateClass(ClassViewModel viewModel)
-        {
-            var entity = _dndRepository.GetSingle<Class>(a => a.Id == viewModel.Id);
-            if (entity == null)
-                throw new Exception(string.Format(Resources.ValidationMessages.EntityM_Error_NotFound, nameof(Class)));
-            entity.Name = viewModel.Name;
-            _dndRepository.Update(entity);
-            _dndRepository.Commit();
-            return Mapper.Map<Class, ClassViewModel>(_dndRepository.GetSingle<Class>(a => a.Id == viewModel.Id));
-        }
-
-        public void DeleteClass(int id)
-        {
-            var entity = _dndRepository.GetSingle<Class>(a => a.Id == id);
-            if (entity == null)
-                throw new Exception(string.Format(Resources.ValidationMessages.EntityM_Error_NotFound, nameof(Class)));
-            _dndRepository.Delete(entity);
-            _dndRepository.Commit();
+            return Mapper.Map<Character, CharacterViewModel>(_dndRepository.GetSingle<Character>(a => a.Id == idCharacter));
         }
         #endregion
 
@@ -156,7 +127,7 @@ namespace BL.BusinessLogic.LogicHandler
 
         }
 
-        public void SetSkillsToCharacter(int idCharacter, List<CharacterSkillViewModel> skills)
+        public List<CharacterSkillViewModel> SetSkillsToCharacter(int idCharacter, List<CharacterSkillViewModel> skills)
         {
             var character = GetCharacterById(idCharacter);
 
@@ -165,9 +136,14 @@ namespace BL.BusinessLogic.LogicHandler
                 throw new Exception(string.Format(Resources.ValidationMessages.EntityM_Error_NotFound, nameof(Character)));
             }
             _dndRepository.DeleteWhere<CharacterSkill>(a => a.IdCharacter == idCharacter);
-            var viewModel = Mapper.Map<List<CharacterSkillViewModel>, List< CharacterSkill>>(skills);
-            _dndRepository.AddRange(viewModel);
+            var entity = Mapper.Map<List<CharacterSkillViewModel>, List< CharacterSkill>>(skills);
+            _dndRepository.AddRange(entity);
             _dndRepository.Commit();
+            List<CharacterSkill> entityList = _dndRepository.GetAllWhere(new List<System.Linq.Expressions.Expression<Func<CharacterSkill, bool>>>()
+            {
+                a=>a.IdCharacter == idCharacter
+            }).ToList();
+            return Mapper.Map<List<CharacterSkill>, List<CharacterSkillViewModel>>(entityList);
         }
 
         #endregion
@@ -376,6 +352,34 @@ namespace BL.BusinessLogic.LogicHandler
                     }
                 }
             }
+
+        }
+
+        #endregion
+
+        #region CharacterEquipment
+
+
+
+        #endregion
+
+
+        #region Character Stats
+
+        public void GetArmorclass(int idChracter)
+        {
+            var character = _dndRepository.GetSingle<Character>(a => a.Id == idChracter, false, a => a.CharacterEquipments, a => a.CharacterFeats);
+            var armorFeats = _dndRepository.GetAllWhere(new List<System.Linq.Expressions.Expression<Func<Feat, bool>>>()
+            {
+                a=> character.CharacterFeats.Where(x=> a.Id == x.IdFeat).First() != null
+            }, null, false, a=>a.FeatFeatures);
+            var featurePoints = 0;
+            foreach(var feat in armorFeats)
+            {
+                var armorFeatures = feat.FeatFeatures.Where(a => a.IdCTypeFeat == (int)Constants.FeatType.IncreaseArmorClass).ToList();
+                featurePoints += armorFeatures.Sum(a => a.AddedAmount);
+            }
+            
 
         }
 

@@ -14,7 +14,7 @@ namespace BL.BusinessLogic.ViewModel
             CharacterFeats = new HashSet<CharacterFeatViewModel>();
             CharacterSkills = new HashSet<CharacterSkillViewModel>();
             CharacterSpells = new HashSet<CharacterSpellViewModel>();
-            KnownSpell = new SpellKnowViewModel();
+            SpellsKnown = new SpellKnowViewModel();
         }
         public int Id { get; set; }
         public string Name { get; set; }
@@ -30,15 +30,34 @@ namespace BL.BusinessLogic.ViewModel
         public int Initiative { get; set; }
         public int Speed { get; set; }
         public int MaxHitPoints { get; set; }
+        public int CurrentHitPoints { get; set; }
         public int CopperCoins { get; set; }
         public int SilverCoins { get; set; }
         public int ElectrumCoins { get; set; }
         public int GoldCoins { get; set; }
-        public SpellKnowViewModel KnownSpell { get; set; }
         public ICollection<CharacterEquipmentViewModel> CharacterEquipments { get; set; }
         public ICollection<CharacterFeatViewModel> CharacterFeats { get; set; }
         public ICollection<CharacterSkillViewModel> CharacterSkills { get; set; }
         public ICollection<CharacterSpellViewModel> CharacterSpells { get; set; }
         public SpellKnowViewModel SpellsKnown { get; set; }
+        public SpellsCharacterInfoViewModel SpellsCharacterInfo { get; set; }
     }
+    
+    public class SpellsCharacterInfoViewModel
+    {
+        public SpellKnowViewModel SpellKnow { get; set; }
+        public int CantripsKnown { get; set; }
+        public int Level1Known { get; set; }
+        public int Level2Known { get; set; }
+        public int Level3Known { get; set; }
+        public int Level4Known { get; set; }
+        public int Level5Known { get; set; }
+        public int Level6Known { get; set; }
+        public int Level7Known { get; set; }
+        public int Level8Known { get; set; }
+        public int Level9Known { get; set; }
+        public int TotalSpellKnown { get; set; }
+
+    }
+
 }
